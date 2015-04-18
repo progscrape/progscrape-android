@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="None">
+    </style>
+
+    <style name="Theme.App" parent="Theme.AppCompat.Light.NoActionBar">
+    </style>
+
+</resources>
