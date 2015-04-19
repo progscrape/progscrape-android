@@ -19,6 +19,7 @@ import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnItemClick;
 
 public class StoriesView extends LinearLayout implements SwipeRefreshLayout.OnRefreshListener {
     @InjectView(R.id.swipe_refresh)
@@ -30,6 +31,9 @@ public class StoriesView extends LinearLayout implements SwipeRefreshLayout.OnRe
     @InjectView(R.id.toolbar)
     protected Toolbar toolbar;
 
+    @Inject
+    protected TrendingStoryAdapterFactory storiesAdapterFactory;
+
     public StoriesView(Context context, AttributeSet attrs) {
         super(context, attrs);
         if (!isInEditMode())
@@ -39,26 +43,21 @@ public class StoriesView extends LinearLayout implements SwipeRefreshLayout.OnRe
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
+        if (isInEditMode())
+            return;
+
         ButterKnife.inject(this);
         toolbar.setNavigationIcon(R.drawable.menu_icon);
 
         refresh.setOnRefreshListener(this);
 
         stories.setLayoutManager(new LinearLayoutManager(getContext()));
-        stories.setAdapter(new RecyclerView.Adapter<ViewHolder>() {
-            @Override
-            public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-                return new ViewHolder(new TextView(getContext()));
-            }
+        stories.setAdapter(storiesAdapterFactory.create(getContext()));
 
+        stories.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onBindViewHolder(ViewHolder holder, int position) {
-                holder.itemView.setText("Position " + position);
-            }
-
-            @Override
-            public int getItemCount() {
-                return 20;
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                refresh.setEnabled(stories.getScrollY() == 0);
             }
         });
     }
@@ -66,15 +65,5 @@ public class StoriesView extends LinearLayout implements SwipeRefreshLayout.OnRe
     @Override
     public void onRefresh() {
         refresh.setRefreshing(false);
-    }
-
-    public final class ViewHolder extends RecyclerView.ViewHolder {
-        public final TextView itemView;
-
-        public ViewHolder(TextView itemView) {
-            super(itemView);
-            itemView.setText("NEW");
-            this.itemView = itemView;
-        }
     }
 }

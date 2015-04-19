@@ -17,25 +17,27 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <android.support.v4.widget.SwipeRefreshLayout
-                android:id="@+id/swipe_refresh"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-                <LinearLayout
+                <!-- We use a Toolbar so that our drawer can be displayed
+                     in front of the action bar -->
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:background="?attr/colorPrimary"
+                    android:layout_height="?attr/actionBarSize"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:elevation="4dp"
+                    app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-                    <!-- We use a Toolbar so that our drawer can be displayed
-                         in front of the action bar -->
-                    <android.support.v7.widget.Toolbar
-                        android:id="@+id/toolbar"
-                        android:background="?attr/colorPrimary"
+                    <LinearLayout
+                        android:id="@+id/trending_toolbar_content"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_width="match_parent"
-                        android:minHeight="?android:attr/actionBarSize"
-                        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+                        android:layout_marginLeft="14dp"
+                        android:orientation="horizontal">
 
                         <TextView
                             android:id="@+id/trending_title"
@@ -43,7 +45,13 @@
                             android:layout_height="wrap_content"
                             android:text="FIXME"
                             android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title" />
-                    </android.support.v7.widget.Toolbar>
+                    </LinearLayout>
+                </android.support.v7.widget.Toolbar>
+
+                <com.progscrape.ui.FixedSwipeRefreshLayout
+                    android:id="@+id/swipe_refresh"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
                     <ViewAnimator
                         android:layout_width="match_parent"
@@ -51,6 +59,7 @@
 
                         <android.support.v7.widget.RecyclerView
                             android:id="@+id/story_recycler"
+                            android:scrollbars="vertical"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent">
 
@@ -73,8 +82,8 @@
                                 tool:text="This is the placeholder" />
                         </RelativeLayout>
                     </ViewAnimator>
-                </LinearLayout>
-            </android.support.v4.widget.SwipeRefreshLayout>
+                </com.progscrape.ui.FixedSwipeRefreshLayout>
+            </LinearLayout>
         </com.progscrape.ui.StoriesView>
 
     </FrameLayout>
