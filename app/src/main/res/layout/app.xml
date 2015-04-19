@@ -12,12 +12,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
         <!-- We use a Toolbar so that our drawer can be displayed
              in front of the action bar -->
         <android.support.v7.widget.Toolbar
             android:id="@+id/my_awesome_toolbar"
-            android:layout_height="wrap_content"
+            android:layout_height="4dp"
             android:layout_width="match_parent"
             android:minHeight="?android:attr/actionBarSize" />
 
@@ -36,19 +35,22 @@
         android:layout_gravity="start"
         android:orientation="vertical">
 
-        <com.jakewharton.u2020.ui.misc.AspectRatioImageView
-            android:id="@+id/drawer_header"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:background="@color/status_bar"
-            android:src="@drawable/drawer_header"
-            app:heightRatio="9"
-            app:widthRatio="16" />
-
-        <TextView
+        <com.progscrape.ui.TopTagsView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="hi" />
+            android:orientation="vertical"
+            android:background="#ffffff"
+            android:text="hi">
+            <com.jakewharton.u2020.ui.misc.AspectRatioImageView
+                android:id="@+id/drawer_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:background="@color/status_bar"
+                android:src="@drawable/drawer_header"
+                app:heightRatio="9"
+                app:widthRatio="16" />
+
+        </com.progscrape.ui.TopTagsView>
     </LinearLayout>
 </android.support.v4.widget.DrawerLayout>

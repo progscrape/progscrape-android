@@ -82,6 +82,12 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_7
         targetCompatibility JavaVersion.VERSION_1_7
     }
+
+    // https://code.google.com/p/android/issues/detail?id=61573
+    packagingOptions {
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+    }
 }
 
 // TODO remove eventually: http://b.android.com/162285
@@ -90,12 +96,13 @@ configurations {
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:22.0.+'
-    compile 'com.android.support:support-annotations:22.0.+'
-    compile 'com.android.support:appcompat-v7:22.0.+'
-    compile 'com.android.support:recyclerview-v7:22.0.+'
+    compile 'com.android.support:support-v4:22.0.0'
+    compile 'com.android.support:support-annotations:22.0.0'
+    compile 'com.android.support:appcompat-v7:22.0.0'
+    compile 'com.android.support:recyclerview-v7:22.0.0'
     compile 'com.octo.android.robospice:robospice:1.4.14'
     compile 'com.octo.android.robospice:robospice-okhttp:1.4.14'
+    compile 'com.octo.android.robospice:robospice-ormlite:1.4.14'
     compile 'com.grack:nanojson:1.0'
 
     compile 'com.squareup.dagger:dagger:1.2.2'
@@ -119,12 +126,4 @@ android.applicationVariants.all { variant ->
     installAll.dependsOn(variant.install)
     // Ensure we end up in the same group as the other install tasks.
     installAll.group = variant.install.group
-}
-
-android {
-    // https://code.google.com/p/android/issues/detail?id=61573
-    packagingOptions {
-        exclude 'META-INF/LICENSE.txt'
-        exclude 'META-INF/NOTICE.txt'
-    }
 }

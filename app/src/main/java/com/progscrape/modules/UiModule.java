@@ -3,6 +3,7 @@ package com.progscrape.modules;
 import android.view.ViewGroup;
 
 import com.progscrape.MainActivity;
+import com.progscrape.ui.TopTagsView;
 
 import javax.inject.Singleton;
 
@@ -11,7 +12,8 @@ import dagger.Provides;
 
 @Module(
         injects = {
-                MainActivity.class
+                MainActivity.class,
+                TopTagsView.class
         },
         complete = false,
         library = true

@@ -20,12 +20,12 @@ public class FeedRequest extends OkHttpSpiceRequest<Feed> {
 
     @Override
     public Feed loadDataFromNetwork() throws Exception {
-        URL baseUrl = new URL("http://progscrape.com/feed.json");
+        URL baseUrl = new URL("http://www.progscrape.com/feed.json");
         HttpURLConnection conn = getUrlFactory().open(baseUrl);
 
         try (InputStream in = conn.getInputStream()) {
             JsonObject rawFeed = JsonParser.object().from(in);
-            if (rawFeed.getString("v").equals("1")) {
+            if (rawFeed.getInt("v") == 1) {
                 JsonArray rawTags = rawFeed.getArray("tags");
                 JsonArray rawStories = rawFeed.getArray("stories");
 
