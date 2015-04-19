@@ -12,19 +12,70 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!-- We use a Toolbar so that our drawer can be displayed
-             in front of the action bar -->
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/my_awesome_toolbar"
-            android:layout_height="4dp"
-            android:layout_width="match_parent"
-            android:minHeight="?android:attr/actionBarSize" />
-
-        <TextView
+        <com.progscrape.ui.StoriesView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="boo"
-            tool:text="This is the placeholder" />
+            android:orientation="vertical">
+
+            <android.support.v4.widget.SwipeRefreshLayout
+                android:id="@+id/swipe_refresh"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <!-- We use a Toolbar so that our drawer can be displayed
+                         in front of the action bar -->
+                    <android.support.v7.widget.Toolbar
+                        android:id="@+id/toolbar"
+                        android:background="?attr/colorPrimary"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:minHeight="?android:attr/actionBarSize"
+                        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+                        <TextView
+                            android:id="@+id/trending_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="FIXME"
+                            android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title" />
+                    </android.support.v7.widget.Toolbar>
+
+                    <ViewAnimator
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/story_recycler"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                        </android.support.v7.widget.RecyclerView>
+
+                        <RelativeLayout
+                            android:id="@+id/error"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="boo" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="boo"
+                                tool:text="This is the placeholder" />
+                        </RelativeLayout>
+                    </ViewAnimator>
+                </LinearLayout>
+            </android.support.v4.widget.SwipeRefreshLayout>
+        </com.progscrape.ui.StoriesView>
 
     </FrameLayout>
 
@@ -41,6 +92,7 @@
             android:orientation="vertical"
             android:background="#ffffff"
             android:text="hi">
+
             <com.jakewharton.u2020.ui.misc.AspectRatioImageView
                 android:id="@+id/drawer_header"
                 android:layout_width="match_parent"

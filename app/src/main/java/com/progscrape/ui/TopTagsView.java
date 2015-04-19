@@ -32,6 +32,8 @@ public class TopTagsView extends LinearLayout {
 
     @Override protected void onFinishInflate() {
         super.onFinishInflate();
+        if (isInEditMode())
+            return;
 
         ButterKnife.inject(this);
 
