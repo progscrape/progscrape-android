@@ -2,10 +2,8 @@ package com.progscrape.ui;
 
 import android.content.Context;
 
-import com.octo.android.robospice.persistence.exception.SpiceException;
-import com.octo.android.robospice.request.listener.RequestListener;
+import com.progscrape.MainActivity;
 import com.progscrape.data.Data;
-import com.progscrape.data.Story;
 
 import java.util.List;
 
@@ -13,13 +11,15 @@ import javax.inject.Inject;
 
 public class TrendingStoryAdapterFactory {
     private Data data;
+    private MainActivity activity;
 
     @Inject
-    public TrendingStoryAdapterFactory(Data data) {
+    public TrendingStoryAdapterFactory(Data data, MainActivity activity) {
         this.data = data;
+        this.activity = activity;
     }
 
     public TrendingStoryAdapter create(Context context) {
-        return new TrendingStoryAdapter(context, data);
+        return new TrendingStoryAdapter(context, data, activity);
     }
 }

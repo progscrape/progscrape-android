@@ -103,7 +103,6 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:22.0.0'
     compile 'com.octo.android.robospice:robospice:1.4.14'
     compile 'com.octo.android.robospice:robospice-okhttp:1.4.14'
-    compile 'com.octo.android.robospice:robospice-ormlite:1.4.14'
     compile 'com.grack:nanojson:1.0'
 
     compile 'com.squareup.dagger:dagger:1.2.2'

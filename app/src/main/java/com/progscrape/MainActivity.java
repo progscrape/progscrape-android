@@ -1,13 +1,18 @@
 package com.progscrape;
 
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
+import com.progscrape.app.data.Story;
 import com.progscrape.data.Data;
 import com.progscrape.modules.Injector;
 import com.progscrape.modules.MainActivityModule;
+import com.progscrape.ui.WebViewFragment;
 
 import java.util.List;
 
@@ -58,5 +63,13 @@ public class MainActivity extends Activity {
             return activityGraph;
 
         return super.getSystemService(name);
+    }
+
+    public void activateStory(Story story) {
+        Fragment f = WebViewFragment.newInstance(story);
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(R.id.main_content, f, "webView").addToBackStack("open web view");
+        fragmentTransaction.commit();
     }
 }

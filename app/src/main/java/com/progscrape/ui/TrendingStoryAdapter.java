@@ -4,13 +4,15 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
+import com.progscrape.MainActivity;
 import com.progscrape.R;
+import com.progscrape.app.data.Story;
 import com.progscrape.data.Data;
-import com.progscrape.data.Story;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,11 +20,13 @@ import java.util.List;
 public class TrendingStoryAdapter extends RecyclerView.Adapter<TrendingStoryAdapter.ViewHolder> {
     private Context context;
     private Data data;
+    private MainActivity activity;
     private List<Story> stories = new ArrayList<>();
 
-    public TrendingStoryAdapter(Context context, Data data) {
+    public TrendingStoryAdapter(Context context, Data data, MainActivity activity) {
         this.context = context;
         this.data = data;
+        this.activity = activity;
 
         data.getStoryData(new RequestListener<List<Story>>() {
             @Override
@@ -46,9 +50,7 @@ public class TrendingStoryAdapter extends RecyclerView.Adapter<TrendingStoryAdap
 
     @Override
     public void onBindViewHolder(TrendingStoryAdapter.ViewHolder holder, int position) {
-        holder.itemView.setText(stories.get(position).getTitle());
-        holder.itemView.setIconsVisible(stories.get(position).getHackerNewsUrl() != null,
-                stories.get(position).getRedditUrl() != null);
+        holder.bind(stories.get(position));
     }
 
     @Override
@@ -56,12 +58,28 @@ public class TrendingStoryAdapter extends RecyclerView.Adapter<TrendingStoryAdap
         return stories.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         private StoryView itemView;
+        private Story story;
 
         public ViewHolder(StoryView itemView) {
             super(itemView);
             this.itemView = itemView;
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // TODO: eventbus
+                    activity.activateStory(story);
+                }
+            });
+        }
+
+        public void bind(Story story) {
+            this.story = story;
+            itemView.setText(story.getTitle());
+            itemView.setIconsVisible(story.getHackerNewsUrl() != null,
+                    story.getRedditUrl() != null);
         }
     }
 }

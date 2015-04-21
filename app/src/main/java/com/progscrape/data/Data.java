@@ -3,6 +3,7 @@ package com.progscrape.data;
 import com.grack.nanojson.JsonObject;
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
+import com.progscrape.app.data.Story;
 
 import java.util.List;
 

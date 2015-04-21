@@ -2,6 +2,7 @@ package com.progscrape.data;
 
 import com.grack.nanojson.JsonArray;
 import com.grack.nanojson.JsonObject;
+import com.progscrape.app.data.Story;
 
 import java.util.ArrayList;
 import java.util.List;

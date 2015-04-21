@@ -1,30 +1,14 @@
 package com.progscrape.data;
 
-import com.j256.ormlite.field.DataType;
-import com.j256.ormlite.field.DatabaseField;
-import com.j256.ormlite.table.DatabaseTable;
+import com.progscrape.app.data.Story;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@DatabaseTable(tableName = "feed")
 public class Feed {
-    @DatabaseField(dataType = DataType.SERIALIZABLE)
     private ArrayList<String> topTags;
 
-    @DatabaseField(dataType = DataType.SERIALIZABLE)
     private ArrayList<Story> stories;
-
-    @DatabaseField(id = true)
-    private String query;
-
-    public Feed() {
-        this("");
-    }
-
-    public Feed(String query) {
-        this.query = query;
-    }
 
     public List<String> getTopTags() {
         return topTags;

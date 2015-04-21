@@ -6,8 +6,6 @@ import android.content.Intent;
 import com.octo.android.robospice.okhttp.OkHttpSpiceService;
 import com.octo.android.robospice.persistence.CacheManager;
 import com.octo.android.robospice.persistence.exception.CacheCreationException;
-import com.octo.android.robospice.persistence.ormlite.InDatabaseObjectPersisterFactory;
-import com.octo.android.robospice.persistence.ormlite.RoboSpiceDatabaseHelper;
 
 import java.util.ArrayList;
 import java.util.List;
