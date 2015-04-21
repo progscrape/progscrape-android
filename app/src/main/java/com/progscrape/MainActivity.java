@@ -43,7 +43,7 @@ public class MainActivity extends Activity {
             public void onRequestSuccess(List<String> strings) {
 
             }
-        });
+        }, false);
     }
 
     @Override

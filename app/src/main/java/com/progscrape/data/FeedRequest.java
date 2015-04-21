@@ -3,6 +3,7 @@ package com.progscrape.data;
 import com.grack.nanojson.JsonArray;
 import com.grack.nanojson.JsonObject;
 import com.grack.nanojson.JsonParser;
+import com.octo.android.robospice.request.CachedSpiceRequest;
 import com.octo.android.robospice.request.okhttp.OkHttpSpiceRequest;
 import com.squareup.okhttp.OkUrlFactory;
 
@@ -12,10 +13,20 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
-public class FeedRequest extends OkHttpSpiceRequest<Feed> {
+public class FeedRequest extends OkHttpSpiceRequest<Feed> implements Request {
     public FeedRequest() {
         super(Feed.class);
+    }
+
+    public String getCacheKey() {
+        return "feed";
+    }
+
+    @Override
+    public long getCacheDuration() {
+        return TimeUnit.MILLISECONDS.convert(5, TimeUnit.MINUTES);
     }
 
     @Override

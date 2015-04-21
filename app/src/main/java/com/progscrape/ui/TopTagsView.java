@@ -5,6 +5,7 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.webkit.WebView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.octo.android.robospice.persistence.exception.SpiceException;
@@ -49,14 +50,14 @@ public class TopTagsView extends LinearLayout {
                     addItem(tag);
                 }
             }
-        });
+        }, false);
     }
 
     private void addItem(String tag) {
         LayoutInflater layoutInflater = LayoutInflater.from(getContext());
-        TextView item = (TextView) layoutInflater.inflate(R.layout.tag_item, this, false);
+        RelativeLayout item = (RelativeLayout) layoutInflater.inflate(R.layout.tag_item, this, false);
 
-        item.setText(tag);
+        ((TextView)item.getChildAt(0)).setText(tag);
 //        item.setCompoundDrawablesWithIntrinsicBounds(icon, 0, 0, 0);
 //        item.setOnClickListener(listener);
 

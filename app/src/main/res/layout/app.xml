@@ -26,11 +26,10 @@
                      in front of the action bar -->
                 <android.support.v7.widget.Toolbar
                     android:id="@+id/toolbar"
-                    android:background="?attr/colorPrimary"
                     android:layout_height="?attr/actionBarSize"
                     android:layout_width="match_parent"
                     android:elevation="4dp"
-                    app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+                    android:background="@color/background_floating_material_light">
 
                     <LinearLayout
                         android:id="@+id/trending_toolbar_content"
@@ -43,7 +42,7 @@
                             android:id="@+id/trending_title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="FIXME"
+                            android:text=">progscrape ▒"
                             android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title" />
                     </LinearLayout>
                 </android.support.v7.widget.Toolbar>
@@ -102,15 +101,15 @@
             android:background="#ffffff"
             android:text="hi">
 
-            <com.jakewharton.u2020.ui.misc.AspectRatioImageView
+            <TextView
                 android:id="@+id/drawer_header"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="100dp"
                 android:layout_marginBottom="8dp"
-                android:background="@color/status_bar"
-                android:src="@drawable/drawer_header"
-                app:heightRatio="9"
-                app:widthRatio="16" />
+                android:gravity="center"
+                android:background="@drawable/drawer_header"
+                android:text="Trending Tags"
+                 />
 
         </com.progscrape.ui.TopTagsView>
     </LinearLayout>

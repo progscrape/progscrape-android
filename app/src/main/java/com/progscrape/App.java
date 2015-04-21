@@ -6,10 +6,9 @@ import android.support.annotation.NonNull;
 import com.progscrape.modules.AppModule;
 import com.progscrape.modules.Injector;
 
-import dagger.ObjectGraph;
-
 import net.danlew.android.joda.JodaTimeAndroid;
 
+import dagger.ObjectGraph;
 import timber.log.Timber;
 
 import static timber.log.Timber.DebugTree;

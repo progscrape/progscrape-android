@@ -28,7 +28,7 @@ public class FooTest {
         final OkHttpClient client = new OkHttpClient();
         RequestExecutor executor = new RequestExecutor() {
             @Override
-            public <T> void execute(OkHttpSpiceRequest<T> req, RequestListener<T> listener) {
+            public <T> void execute(OkHttpSpiceRequest<T> req, RequestListener<T> listener, boolean force) {
                 req.setOkHttpClient(client);
                 try {
                     listener.onRequestSuccess(req.loadDataFromNetwork());
@@ -52,7 +52,7 @@ public class FooTest {
                 System.out.println(stories);
                 latch.countDown();
             }
-        });
+        }, false);
 
         if (!latch.await(10, TimeUnit.SECONDS))
             fail("Timeout");
