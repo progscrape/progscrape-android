@@ -11,6 +11,7 @@
         android:background="@color/background_floating_material_light">
 
         <TextView
+            android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="The title goes here" />
