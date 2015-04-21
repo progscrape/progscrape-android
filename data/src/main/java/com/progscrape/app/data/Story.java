@@ -1,5 +1,6 @@
 package com.progscrape.app.data;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**

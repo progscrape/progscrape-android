@@ -2,6 +2,7 @@ package com.progscrape.ui;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.webkit.WebView;
 import android.widget.LinearLayout;
@@ -41,7 +42,7 @@ public class TopTagsView extends LinearLayout {
         data.getTopTags(new RequestListener<List<String>>() {
             @Override
             public void onRequestFailure(SpiceException spiceException) {
-
+                Log.e("tags", "Failed to retrieve tags", spiceException);
             }
 
             @Override

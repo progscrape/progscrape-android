@@ -20,10 +20,11 @@ public class SpiceRequestExecutor implements RequestExecutor {
     @Override
     public <T> void execute(OkHttpSpiceRequest<T> req, RequestListener<T> listener, boolean force) {
         if (req instanceof Request) {
+            Request cacheable = (Request) req;
             if (force)
-                spiceManager.execute(req, ((Request) req).getCacheKey(), ((Request) req).getCacheDuration(), listener);
+                spiceManager.execute(req, cacheable.getCacheKey(), DurationInMillis.ALWAYS_EXPIRED, listener);
             else
-               spiceManager.execute(req, ((Request) req).getCacheKey(), DurationInMillis.ALWAYS_EXPIRED, listener);
+                spiceManager.execute(req, cacheable.getCacheKey(), cacheable.getCacheDuration(), listener);
         } else {
             spiceManager.execute(req, listener);
         }

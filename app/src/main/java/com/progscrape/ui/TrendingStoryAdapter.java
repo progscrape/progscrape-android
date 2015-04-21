@@ -2,6 +2,7 @@ package com.progscrape.ui;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -26,7 +27,7 @@ public class TrendingStoryAdapter extends RecyclerView.Adapter<TrendingStoryAdap
         data.getStoryData(new RequestListener<List<Story>>() {
             @Override
             public void onRequestFailure(SpiceException spiceException) {
-                // TODO
+                Log.e("stories", "Failed to retrieve stories", spiceException);
             }
 
             @Override
