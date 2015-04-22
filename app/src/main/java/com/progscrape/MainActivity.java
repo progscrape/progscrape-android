@@ -21,10 +21,9 @@ import javax.inject.Inject;
 import dagger.ObjectGraph;
 
 public class MainActivity extends Activity {
-    private ObjectGraph activityGraph;
-
     @Inject
     protected Data data;
+    private ObjectGraph activityGraph;
 
     public MainActivity() {
     }
@@ -69,6 +68,10 @@ public class MainActivity extends Activity {
         Fragment f = WebViewFragment.newInstance(story);
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.setCustomAnimations(R.animator.slide_in,
+                0,
+                0,
+                R.animator.slide_out);
         fragmentTransaction.add(R.id.main_content, f, "webView").addToBackStack("open web view");
         fragmentTransaction.commit();
     }

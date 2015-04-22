@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -12,7 +13,7 @@ import com.progscrape.R;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class StoryView extends RelativeLayout {
+public class StoryView extends LinearLayout {
     @InjectView(R.id.title)
     TextView text;
 

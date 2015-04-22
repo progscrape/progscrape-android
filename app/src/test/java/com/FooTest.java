@@ -4,9 +4,10 @@ import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
 import com.octo.android.robospice.request.okhttp.OkHttpSpiceRequest;
 import com.progscrape.BuildConfig;
+import com.progscrape.app.data.Story;
 import com.progscrape.data.Data;
+import com.progscrape.data.FeedParser;
 import com.progscrape.data.RequestExecutor;
-import com.progscrape.data.Story;
 import com.squareup.okhttp.OkHttpClient;
 
 import org.junit.Test;
@@ -37,7 +38,7 @@ public class FooTest {
                 }
             }
         };
-        Data data = new Data(executor);
+        Data data = new Data(executor, new FeedParser());
         final CountDownLatch latch = new CountDownLatch(1);
 
         data.getStoryData(new RequestListener<List<Story>>() {
