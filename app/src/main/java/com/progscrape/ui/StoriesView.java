@@ -1,16 +1,14 @@
 package com.progscrape.ui;
 
 import android.content.Context;
+import android.os.Parcelable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
-import android.view.Gravity;
-import android.view.View;
-import android.view.ViewGroup;
+import android.util.Log;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.progscrape.R;
 import com.progscrape.modules.Injector;
@@ -19,7 +17,8 @@ import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import butterknife.OnItemClick;
+import icepick.Icepick;
+import icepick.Icicle;
 
 public class StoriesView extends LinearLayout implements SwipeRefreshLayout.OnRefreshListener {
     @InjectView(R.id.swipe_refresh)
@@ -34,10 +33,28 @@ public class StoriesView extends LinearLayout implements SwipeRefreshLayout.OnRe
     @Inject
     protected TrendingStoryAdapterFactory storiesAdapterFactory;
 
+    @Icicle
+    int scrollPos = -1;
+
+    private TrendingStoryAdapter adapter;
+
     public StoriesView(Context context, AttributeSet attrs) {
         super(context, attrs);
         if (!isInEditMode())
             Injector.obtain(context).inject(this);
+    }
+
+    @Override
+    public Parcelable onSaveInstanceState() {
+        scrollPos = ((LinearLayoutManager)stories.getLayoutManager()).findFirstVisibleItemPosition();
+        Log.i("stories", "Saving scroll position: " + scrollPos);
+        return Icepick.saveInstanceState(this, super.onSaveInstanceState());
+    }
+
+    @Override
+    public void onRestoreInstanceState(Parcelable state) {
+        super.onRestoreInstanceState(Icepick.restoreInstanceState(this, state));
+        Log.i("stories", "Loading scroll position: " + scrollPos);
     }
 
     @Override
@@ -52,7 +69,21 @@ public class StoriesView extends LinearLayout implements SwipeRefreshLayout.OnRe
         refresh.setOnRefreshListener(this);
 
         stories.setLayoutManager(new LinearLayoutManager(getContext()));
-        stories.setAdapter(storiesAdapterFactory.create(getContext()));
+        adapter = storiesAdapterFactory.create(getContext());
+        stories.setAdapter(adapter);
+        adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            boolean first = true;
+
+            @Override
+            public void onChanged() {
+                Log.i("stories", "onChanged, scrollPos = " + scrollPos + ", first = " + first);
+                if (first) {
+                    first = false;
+                    if (scrollPos != -1)
+                        stories.scrollToPosition(scrollPos);
+                }
+            }
+        });
 
         stories.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override

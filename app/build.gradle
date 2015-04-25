@@ -19,6 +19,7 @@ apply plugin: 'com.neenbedankt.android-apt'
 
 repositories {
     mavenCentral()
+    maven { url "https://clojars.org/repo/" }
 }
 
 def gitSha = 'git rev-parse --short HEAD'.execute([], project.rootDir).text.trim()
@@ -112,6 +113,9 @@ dependencies {
     compile 'com.jakewharton.timber:timber:3.0.0'
 
     compile 'net.danlew:android.joda:2.7.1'
+
+    compile 'frankiesardo:icepick:3.0.2'
+    apt 'frankiesardo:icepick-processor:3.0.2'
 
     testCompile 'junit:junit:4.12'
     testCompile('org.robolectric:robolectric:3.0-rc2') {

@@ -5,8 +5,6 @@ import android.content.Context;
 import com.progscrape.MainActivity;
 import com.progscrape.data.Data;
 
-import java.util.List;
-
 import javax.inject.Inject;
 
 public class TrendingStoryAdapterFactory {
