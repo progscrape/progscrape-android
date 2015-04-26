@@ -4,13 +4,14 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.webkit.WebView;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
+import com.progscrape.MainActivity;
 import com.progscrape.R;
 import com.progscrape.data.Data;
 import com.progscrape.modules.Injector;
@@ -20,11 +21,13 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 public class TopTagsView extends LinearLayout {
     @Inject
     protected Data data;
+
+    @Inject
+    protected MainActivity activity;
 
     public TopTagsView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -34,8 +37,12 @@ public class TopTagsView extends LinearLayout {
 
     @Override protected void onFinishInflate() {
         super.onFinishInflate();
-        if (isInEditMode())
+        if (isInEditMode()) {
+            addItem("tag 1");
+            addItem("tag 2");
+            addItem("tag 3");
             return;
+        }
 
         ButterKnife.inject(this);
 
@@ -54,13 +61,18 @@ public class TopTagsView extends LinearLayout {
         }, false);
     }
 
-    private void addItem(String tag) {
+    private void addItem(final String tag) {
         LayoutInflater layoutInflater = LayoutInflater.from(getContext());
         RelativeLayout item = (RelativeLayout) layoutInflater.inflate(R.layout.tag_item, this, false);
 
         ((TextView)item.getChildAt(0)).setText(tag);
 //        item.setCompoundDrawablesWithIntrinsicBounds(icon, 0, 0, 0);
-//        item.setOnClickListener(listener);
+        item.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                activity.searchTag(tag);
+            }
+        });
 
         addView(item);
     }

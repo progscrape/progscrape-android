@@ -68,9 +68,9 @@ public class StoriesView extends LinearLayout implements SwipeRefreshLayout.OnRe
 
         refresh.setOnRefreshListener(this);
 
-        stories.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = storiesAdapterFactory.create(getContext());
         stories.setAdapter(adapter);
+        stories.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
             boolean first = true;
 
@@ -84,13 +84,16 @@ public class StoriesView extends LinearLayout implements SwipeRefreshLayout.OnRe
                 }
             }
         });
-
         stories.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 refresh.setEnabled(stories.getScrollY() == 0);
             }
         });
+    }
+
+    public void setTag(String tag) {
+        adapter.setTag(tag);
     }
 
     @Override

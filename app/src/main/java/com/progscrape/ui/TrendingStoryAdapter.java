@@ -27,8 +27,10 @@ public class TrendingStoryAdapter extends RecyclerView.Adapter<TrendingStoryAdap
         this.context = context;
         this.data = data;
         this.activity = activity;
+    }
 
-        data.getStoryData(new RequestListener<List<Story>>() {
+    public void setTag(String tag) {
+        data.getStoryData(tag, new RequestListener<List<Story>>() {
             @Override
             public void onRequestFailure(SpiceException spiceException) {
                 Log.e("stories", "Failed to retrieve stories", spiceException);

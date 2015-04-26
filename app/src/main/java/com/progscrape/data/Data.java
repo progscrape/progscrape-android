@@ -20,7 +20,7 @@ public class Data {
     }
 
     public void getTopTags(final RequestListener<List<String>> listener, boolean force) {
-        spiceManager.execute(new FeedRequest(), new RequestListener<JsonObject>() {
+        spiceManager.execute(new FeedRequest(null), new RequestListener<JsonObject>() {
             @Override
             public void onRequestFailure(SpiceException spiceException) {
                 listener.onRequestFailure(spiceException);
@@ -33,8 +33,8 @@ public class Data {
         }, force);
     }
 
-    public void getStoryData(final RequestListener<List<Story>> listener, boolean force) {
-        spiceManager.execute(new FeedRequest(), new RequestListener<JsonObject>() {
+    public void getStoryData(String query, final RequestListener<List<Story>> listener, boolean force) {
+        spiceManager.execute(new FeedRequest(query), new RequestListener<JsonObject>() {
             @Override
             public void onRequestFailure(SpiceException spiceException) {
                 listener.onRequestFailure(spiceException);

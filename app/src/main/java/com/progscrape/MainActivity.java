@@ -5,6 +5,8 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
@@ -12,17 +14,24 @@ import com.progscrape.app.data.Story;
 import com.progscrape.data.Data;
 import com.progscrape.modules.Injector;
 import com.progscrape.modules.MainActivityModule;
+import com.progscrape.ui.StoriesFragment;
 import com.progscrape.ui.WebViewFragment;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import dagger.ObjectGraph;
 
 public class MainActivity extends Activity {
     @Inject
     protected Data data;
+
+    @InjectView(R.id.main_drawer_layout)
+    protected DrawerLayout drawerLayout;
+
     private ObjectGraph activityGraph;
 
     public MainActivity() {
@@ -37,6 +46,8 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.app);
 
+        ButterKnife.inject(this);
+
         data.getTopTags(new RequestListener<List<String>>() {
             @Override
             public void onRequestFailure(SpiceException spiceException) {
@@ -48,6 +59,8 @@ public class MainActivity extends Activity {
 
             }
         }, false);
+
+        searchTag(null);
     }
 
     @Override
@@ -67,12 +80,20 @@ public class MainActivity extends Activity {
     public void activateStory(Story story) {
         Fragment f = WebViewFragment.newInstance(story);
         FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.setCustomAnimations(R.animator.slide_in,
+        FragmentTransaction tx = fragmentManager.beginTransaction();
+        tx.setCustomAnimations(R.animator.slide_in,
                 0,
                 0,
                 R.animator.slide_out);
-        fragmentTransaction.add(R.id.main_content, f, "webView").addToBackStack("open web view");
-        fragmentTransaction.commit();
+        tx.add(R.id.main_content, f, "webView").addToBackStack("open web view");
+        tx.commit();
+    }
+
+    public void searchTag(String tag) {
+        FragmentTransaction tx = getFragmentManager().beginTransaction();
+        tx.replace(R.id.main_content, StoriesFragment.create(tag)).addToBackStack("search");
+        tx.commit();
+
+        drawerLayout.closeDrawers();
     }
 }
