@@ -60,7 +60,7 @@ public class MainActivity extends Activity {
             }
         }, false);
 
-        searchTag(null);
+        searchTag(null, true);
     }
 
     @Override
@@ -89,9 +89,11 @@ public class MainActivity extends Activity {
         tx.commit();
     }
 
-    public void searchTag(String tag) {
+    public void searchTag(String tag, boolean initial) {
         FragmentTransaction tx = getFragmentManager().beginTransaction();
-        tx.replace(R.id.main_content, StoriesFragment.create(tag)).addToBackStack("search");
+        tx.replace(R.id.main_content, StoriesFragment.create(tag));
+        if (!initial)
+            tx.addToBackStack("search");
         tx.commit();
 
         drawerLayout.closeDrawers();

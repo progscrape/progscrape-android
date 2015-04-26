@@ -70,7 +70,7 @@ public class TopTagsView extends LinearLayout {
         item.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                activity.searchTag(tag);
+                activity.searchTag(tag, false);
             }
         });
 
