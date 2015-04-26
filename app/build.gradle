@@ -111,7 +111,7 @@ dependencies {
 
     compile 'com.jakewharton:butterknife:6.1.0'
     compile 'com.jakewharton.timber:timber:3.0.0'
-
+    compile 'io.reactivex:rxandroid:0.24.0'
     compile 'net.danlew:android.joda:2.7.1'
 
     compile 'frankiesardo:icepick:3.0.2'

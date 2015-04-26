@@ -6,7 +6,7 @@ import rx.Observable;
  * The raw REST source for the feed data.
  */
 public interface RestSource {
-    Observable<Feed> defaultFeed();
+    Observable<Feed> defaultFeed(CacheMode cache);
 
-    Observable<Feed> search(String query);
+    Observable<Feed> search(CacheMode cache, String query);
 }

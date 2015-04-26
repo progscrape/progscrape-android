@@ -22,6 +22,8 @@ public class TrendingStoryAdapter extends RecyclerView.Adapter<TrendingStoryAdap
     private Data data;
     private MainActivity activity;
     private List<Story> stories = new ArrayList<>();
+    private String tag;
+    private int seq = 0;
 
     public TrendingStoryAdapter(Context context, Data data, MainActivity activity) {
         this.context = context;
@@ -30,6 +32,8 @@ public class TrendingStoryAdapter extends RecyclerView.Adapter<TrendingStoryAdap
     }
 
     public void setTag(String tag) {
+        this.tag = tag;
+        final int curr = ++seq;
         data.getStoryData(tag, new RequestListener<List<Story>>() {
             @Override
             public void onRequestFailure(SpiceException spiceException) {
@@ -38,6 +42,10 @@ public class TrendingStoryAdapter extends RecyclerView.Adapter<TrendingStoryAdap
 
             @Override
             public void onRequestSuccess(List<Story> res) {
+                if (curr != seq) {
+                    Log.i("stories", "Out of date request");
+                    return;
+                }
                 stories = res;
                 notifyDataSetChanged();
             }
@@ -58,6 +66,27 @@ public class TrendingStoryAdapter extends RecyclerView.Adapter<TrendingStoryAdap
     @Override
     public int getItemCount() {
         return stories.size();
+    }
+
+    public void refresh(final Runnable runnable) {
+        final int curr = ++seq;
+        data.getStoryData(tag, new RequestListener<List<Story>>() {
+            @Override
+            public void onRequestFailure(SpiceException spiceException) {
+                Log.e("stories", "Failed to retrieve stories", spiceException);
+            }
+
+            @Override
+            public void onRequestSuccess(List<Story> res) {
+                runnable.run();
+                if (curr != seq) {
+                    Log.i("stories", "Out of date request");
+                    return;
+                }
+                stories = res;
+                notifyDataSetChanged();
+            }
+        }, true);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

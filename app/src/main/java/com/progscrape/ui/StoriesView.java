@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.progscrape.R;
 import com.progscrape.modules.Injector;
@@ -30,11 +31,14 @@ public class StoriesView extends LinearLayout implements SwipeRefreshLayout.OnRe
     @InjectView(R.id.toolbar)
     protected Toolbar toolbar;
 
+    @InjectView(R.id.toolbar_title)
+    protected TextView title;
+
     @Inject
     protected TrendingStoryAdapterFactory storiesAdapterFactory;
 
     @Icicle
-    int scrollPos = -1;
+    Parcelable scrollPos = null;
 
     private TrendingStoryAdapter adapter;
 
@@ -46,7 +50,7 @@ public class StoriesView extends LinearLayout implements SwipeRefreshLayout.OnRe
 
     @Override
     public Parcelable onSaveInstanceState() {
-        scrollPos = ((LinearLayoutManager)stories.getLayoutManager()).findFirstVisibleItemPosition();
+        scrollPos = getLayoutManager().onSaveInstanceState();
         Log.i("stories", "Saving scroll position: " + scrollPos);
         return Icepick.saveInstanceState(this, super.onSaveInstanceState());
     }
@@ -79,8 +83,8 @@ public class StoriesView extends LinearLayout implements SwipeRefreshLayout.OnRe
                 Log.i("stories", "onChanged, scrollPos = " + scrollPos + ", first = " + first);
                 if (first) {
                     first = false;
-                    if (scrollPos != -1)
-                        stories.scrollToPosition(scrollPos);
+                    if (scrollPos != null)
+                        getLayoutManager().onRestoreInstanceState(scrollPos);
                 }
             }
         });
@@ -94,10 +98,22 @@ public class StoriesView extends LinearLayout implements SwipeRefreshLayout.OnRe
 
     public void setTag(String tag) {
         adapter.setTag(tag);
+        if (tag != null) {
+            title.setText(tag);
+        }
     }
 
     @Override
     public void onRefresh() {
-        refresh.setRefreshing(false);
+        adapter.refresh(new Runnable() {
+            @Override
+            public void run() {
+                refresh.setRefreshing(false);
+            }
+        });
+    }
+
+    private LinearLayoutManager getLayoutManager() {
+        return (LinearLayoutManager)stories.getLayoutManager();
     }
 }

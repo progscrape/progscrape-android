@@ -7,6 +7,7 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
@@ -48,19 +49,8 @@ public class MainActivity extends Activity {
 
         ButterKnife.inject(this);
 
-        data.getTopTags(new RequestListener<List<String>>() {
-            @Override
-            public void onRequestFailure(SpiceException spiceException) {
-                System.out.println(spiceException);
-            }
-
-            @Override
-            public void onRequestSuccess(List<String> strings) {
-
-            }
-        }, false);
-
-        searchTag(null, true);
+        if (savedInstanceState == null)
+            searchTag(null, true);
     }
 
     @Override
@@ -90,6 +80,8 @@ public class MainActivity extends Activity {
     }
 
     public void searchTag(String tag, boolean initial) {
+        Log.i("main", "Setting search fragment to " + tag);
+
         FragmentTransaction tx = getFragmentManager().beginTransaction();
         tx.replace(R.id.main_content, StoriesFragment.create(tag));
         if (!initial)

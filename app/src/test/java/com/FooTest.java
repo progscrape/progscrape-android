@@ -41,7 +41,7 @@ public class FooTest {
         Data data = new Data(executor, new FeedParser());
         final CountDownLatch latch = new CountDownLatch(1);
 
-        data.getStoryData(new RequestListener<List<Story>>() {
+        data.getStoryData(null, new RequestListener<List<Story>>() {
             @Override
             public void onRequestFailure(SpiceException spiceException) {
                 System.out.println(spiceException);

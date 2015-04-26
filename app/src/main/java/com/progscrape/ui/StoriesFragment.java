@@ -15,16 +15,8 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 public class StoriesFragment extends Fragment {
-    private String tag;
-
     @InjectView(R.id.stories)
     StoriesView stories;
-
-    @Override
-    public void setArguments(Bundle args) {
-        super.setArguments(args);
-        tag = args.getString("tag");
-    }
 
     @Nullable
     @Override
@@ -36,13 +28,13 @@ public class StoriesFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         ButterKnife.inject(this, getView());
-        stories.setTag(tag);
+        stories.setTag(getArguments().getString("tag"));
     }
 
-    public static StoriesFragment create(String query) {
+    public static StoriesFragment create(String tag) {
         StoriesFragment fragment = new StoriesFragment();
         Bundle bundle = new Bundle();
-        bundle.putString("tag", query);
+        bundle.putString("tag", tag);
         fragment.setArguments(bundle);
         return fragment;
     }
