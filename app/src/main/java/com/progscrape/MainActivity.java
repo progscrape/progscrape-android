@@ -5,20 +5,19 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.View;
 
-import com.octo.android.robospice.persistence.exception.SpiceException;
-import com.octo.android.robospice.request.listener.RequestListener;
 import com.progscrape.app.data.Story;
 import com.progscrape.data.Data;
 import com.progscrape.modules.Injector;
 import com.progscrape.modules.MainActivityModule;
 import com.progscrape.ui.StoriesFragment;
 import com.progscrape.ui.WebViewFragment;
-
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -75,7 +74,7 @@ public class MainActivity extends Activity {
                 0,
                 0,
                 R.animator.slide_out);
-        tx.add(R.id.main_content, f, "webView").addToBackStack("open web view");
+        tx.add(R.id.top_level_view, f, "webView").addToBackStack("open web view");
         tx.commit();
     }
 
@@ -89,5 +88,9 @@ public class MainActivity extends Activity {
         tx.commit();
 
         drawerLayout.closeDrawers();
+    }
+
+    public void openDrawer() {
+        drawerLayout.openDrawer(Gravity.LEFT);
     }
 }

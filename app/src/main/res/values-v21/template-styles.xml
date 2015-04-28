@@ -4,7 +4,8 @@
     </style>
 
     <style name="Theme.App" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowActionModeOverlay">true</item>
+        <item name="android:statusBarColor">@color/status_bar_translucent</item>
+        <item name="android:navigationBarColor">@color/status_bar_translucent</item>
     </style>
+
 </resources>

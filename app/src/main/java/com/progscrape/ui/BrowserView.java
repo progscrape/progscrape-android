@@ -45,6 +45,9 @@ public class BrowserView extends LinearLayout implements ActivityPauseNotifier.A
     public BrowserView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
+        if (isInEditMode())
+            return;
+
         Injector.obtain(context).inject(this);
     }
 
@@ -79,10 +82,17 @@ public class BrowserView extends LinearLayout implements ActivityPauseNotifier.A
     protected void onFinishInflate() {
         super.onFinishInflate();
 
+        if (isInEditMode())
+            return;
+
         ButterKnife.inject(this);
 
         progress.setIndeterminate(true);
 
+        setupBrowser();
+    }
+
+    private void setupBrowser() {
         WebSettings settings = browser.getSettings();
         settings.setJavaScriptEnabled(true);
         settings.setSupportZoom(true);
@@ -125,7 +135,6 @@ public class BrowserView extends LinearLayout implements ActivityPauseNotifier.A
                 }).show();
             }
         });
-
     }
 
     private void back() {

@@ -2,4 +2,7 @@
 <resources>
     <string name="launcher_name">progscrape</string>
     <string name="application_name">progscrape</string>
+
+    <string name="open_drawer">Open the drawer</string>
+    <string name="close_drawer">Close the drawer</string>
 </resources>

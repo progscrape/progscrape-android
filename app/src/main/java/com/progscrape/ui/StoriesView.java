@@ -2,15 +2,19 @@ package com.progscrape.ui;
 
 import android.content.Context;
 import android.os.Parcelable;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.progscrape.MainActivity;
 import com.progscrape.R;
 import com.progscrape.modules.Injector;
 
@@ -36,6 +40,9 @@ public class StoriesView extends LinearLayout implements SwipeRefreshLayout.OnRe
 
     @Inject
     protected TrendingStoryAdapterFactory storiesAdapterFactory;
+
+    @Inject
+    protected MainActivity activity;
 
     @Icicle
     Parcelable scrollPos = null;
@@ -68,7 +75,6 @@ public class StoriesView extends LinearLayout implements SwipeRefreshLayout.OnRe
             return;
 
         ButterKnife.inject(this);
-        toolbar.setNavigationIcon(R.drawable.menu_icon);
 
         refresh.setOnRefreshListener(this);
 
@@ -99,7 +105,31 @@ public class StoriesView extends LinearLayout implements SwipeRefreshLayout.OnRe
     public void setTag(String tag) {
         adapter.setTag(tag);
         if (tag != null) {
+            toolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
             title.setText(tag);
+            title.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+            toolbar.setNavigationOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    activity.getFragmentManager().popBackStack();
+                }
+            });
+        } else {
+            DrawerArrowDrawable drawable = new DrawerArrowDrawable(getContext()) {
+                @Override
+                boolean isLayoutRtl() {
+                    return ViewCompat.getLayoutDirection(StoriesView.this)
+                            == ViewCompat.LAYOUT_DIRECTION_RTL;
+                }
+            };
+
+            toolbar.setNavigationIcon(drawable);
+            toolbar.setNavigationOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    activity.openDrawer();
+                }
+            });
         }
     }
 

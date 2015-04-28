@@ -1,3 +1,4 @@
 <resources>
     <color name="status_bar">#ff1976d2</color>
+    <color name="status_bar_translucent">#aa333333</color>
 </resources>

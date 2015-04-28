@@ -1,18 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.DrawerLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tool="http://schemas.android.com/tools"
-    android:id="@+id/main_drawer_layout"
+    android:id="@+id/top_level_view"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    android:layout_height="match_parent">
 
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tool="http://schemas.android.com/tools"
-        android:id="@+id/main_content"
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/main_drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    </FrameLayout>
-    <include layout="@layout/drawer" />
-</android.support.v4.widget.DrawerLayout>
+        <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/main_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <!-- Fragments for stories go here -->
+
+        </FrameLayout>
+
+        <include layout="@layout/drawer" />
+    </android.support.v4.widget.DrawerLayout>
+</FrameLayout>
