@@ -104,10 +104,20 @@ public class TrendingStoryAdapter extends RecyclerView.Adapter<TrendingStoryAdap
                     activity.activateStory(story);
                 }
             });
+
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    // TODO: eventbus
+                    activity.showStoryMenu(story, v);
+                    return true;
+                }
+            });
         }
 
         public void bind(Story story) {
             this.story = story;
+            itemView.setTags(story.getTags());
             itemView.setText(story.getTitle());
             itemView.setIconsVisible(story.getHackerNewsUrl() != null,
                     story.getRedditUrl() != null);

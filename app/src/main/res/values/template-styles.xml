@@ -7,4 +7,14 @@
         <item name="windowActionBar">false</item>
         <item name="windowActionModeOverlay">true</item>
     </style>
+
+    <style name="Theme.Tag" parent="Theme.App">
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:background">#bbbbbb</item>
+        <item name="android:paddingLeft">4dp</item>
+        <item name="android:paddingRight">4dp</item>
+        <item name="android:paddingTop">0dp</item>
+        <item name="android:paddingBottom">1dp</item>
+    </style>
+
 </resources>

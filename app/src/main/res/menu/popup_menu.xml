@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/hn"
+        android:title="Open HN comments..." />
+
+    <item
+        android:id="@+id/reddit"
+        android:title="Open Reddit comments..." />
+
+    <item
+        android:id="@+id/browser"
+        android:title="Open in browser/app..." />
+
+</menu>

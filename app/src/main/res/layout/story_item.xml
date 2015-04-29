@@ -2,54 +2,70 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
+
     <RelativeLayout
         android:paddingTop="6dp"
         android:paddingBottom="6dp"
         android:background="?android:attr/selectableItemBackground"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:textColor="?android:attr/textColorPrimary"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:drawablePadding="32dp"
-        tools:text="This is the story with a really long headline that someone spent too much time on." />
 
-    <!-- TODO: Better way to do a spacer? -->
-    <TextView
-        android:id="@+id/spacer"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginLeft="12dp"
-        />
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="?android:attr/textColorPrimary"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:drawablePadding="32dp"
+            tools:text="This is the story with a really long headline that someone spent too much time on." />
 
-    <ImageView
-        android:id="@+id/icon_hn"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_below="@+id/title"
-        android:layout_marginLeft="8dp"
-        android:layout_toRightOf="@+id/spacer"
-        android:src="@drawable/ynews" />
+        <!-- TODO: Better way to do a spacer? -->
+        <TextView
+            android:id="@+id/spacer"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginLeft="12dp" />
 
-    <ImageView
-        android:id="@+id/icon_reddit"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_below="@+id/title"
-        android:layout_marginLeft="8dp"
-        android:layout_toRightOf="@+id/icon_hn"
-        android:src="@drawable/reddit" />
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignRight="@+id/title"
+            android:layout_centerVertical="true"
+            android:src="@drawable/arrow_right" />
 
-    <ImageView
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_alignRight="@+id/title"
-        android:layout_centerVertical="true"
-        android:src="@drawable/arrow_right" />
+        <org.apmem.tools.layouts.FlowLayout
+            android:id="@+id/tags"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="24dp"
+            android:layout_marginTop="4dp"
+            android:layout_below="@+id/title">
+
+            <ImageView
+                android:id="@+id/icon_hn"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="4dp"
+                android:src="@drawable/ynews" />
+
+            <ImageView
+                android:id="@+id/icon_reddit"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="4dp"
+                android:src="@drawable/reddit" />
+
+            <!-- Sample item -->
+            <include
+                android:visibility="gone"
+                tools:visibility="visible"
+                layout="@layout/story_tag_item" />
+
+        </org.apmem.tools.layouts.FlowLayout>
     </RelativeLayout>
 </com.progscrape.ui.StoryView>

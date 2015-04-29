@@ -4,13 +4,16 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.PopupMenu;
 
 import com.progscrape.app.data.Story;
 import com.progscrape.data.Data;
@@ -31,6 +34,9 @@ public class MainActivity extends Activity {
 
     @InjectView(R.id.main_drawer_layout)
     protected DrawerLayout drawerLayout;
+
+    @InjectView(R.id.top_level_view)
+    protected View topLevel;
 
     private ObjectGraph activityGraph;
 
@@ -92,5 +98,54 @@ public class MainActivity extends Activity {
 
     public void openDrawer() {
         drawerLayout.openDrawer(Gravity.LEFT);
+    }
+
+    public void showStoryMenu(final Story story, View view) {
+        PopupMenu popup = new PopupMenu(this, view);
+        popup.getMenuInflater().inflate(R.menu.popup_menu, popup.getMenu());
+        if (story.getHackerNewsUrl() == null)
+            popup.getMenu().findItem(R.id.hn).setVisible(false);
+        if (story.getRedditUrl() == null)
+            popup.getMenu().findItem(R.id.reddit).setVisible(false);
+
+        int index = 0;
+        for (String tag : story.getTags()) {
+            index++;
+            popup.getMenu().add(Menu.NONE, -index, index, "\ud83d\udd0d " + tag);
+        }
+
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                String url;
+
+                if (item.getItemId() < 0) {
+                    int n = -item.getItemId() - 1;
+                    searchTag(story.getTags().get(n), false);
+                    return false;
+                }
+
+                switch (item.getItemId()) {
+                    case R.id.hn:
+                        url = story.getHackerNewsUrl();
+                        break;
+                    case R.id.reddit:
+                        url = story.getRedditUrl();
+                        break;
+                    case R.id.browser:
+                        url = story.getHref();
+                        break;
+                    default:
+                        return false;
+                }
+
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(url));
+                startActivity(i);
+
+                return false;
+            }
+        });
+        popup.show();
     }
 }
