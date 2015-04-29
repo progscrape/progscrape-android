@@ -29,6 +29,7 @@
             android:layout_marginLeft="12dp" />
 
         <ImageView
+            android:id="@+id/arrow"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_alignRight="@+id/title"

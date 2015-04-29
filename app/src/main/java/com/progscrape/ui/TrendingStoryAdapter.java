@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TrendingStoryAdapter extends RecyclerView.Adapter<TrendingStoryAdapter.ViewHolder> {
+    private boolean loaded;
     private Context context;
     private Data data;
     private MainActivity activity;
@@ -29,6 +30,7 @@ public class TrendingStoryAdapter extends RecyclerView.Adapter<TrendingStoryAdap
         this.context = context;
         this.data = data;
         this.activity = activity;
+        loaded = false;
     }
 
     public void setTag(String tag) {
@@ -42,6 +44,7 @@ public class TrendingStoryAdapter extends RecyclerView.Adapter<TrendingStoryAdap
 
             @Override
             public void onRequestSuccess(List<Story> res) {
+                loaded = true;
                 if (curr != seq) {
                     Log.i("stories", "Out of date request");
                     return;
@@ -53,6 +56,11 @@ public class TrendingStoryAdapter extends RecyclerView.Adapter<TrendingStoryAdap
     }
 
     @Override
+    public int getItemViewType(int position) {
+        return loaded ? 1 : 0;
+    }
+
+    @Override
     public TrendingStoryAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         StoryView view = (StoryView) LayoutInflater.from(context).inflate(R.layout.story_item, parent, false);
         return new ViewHolder(view);
@@ -60,12 +68,18 @@ public class TrendingStoryAdapter extends RecyclerView.Adapter<TrendingStoryAdap
 
     @Override
     public void onBindViewHolder(TrendingStoryAdapter.ViewHolder holder, int position) {
-        holder.bind(stories.get(position));
+        if (loaded) {
+            holder.bind(stories.get(position));
+        } else {
+            Story story = new Story();
+            story.setTitle("Loading...");
+            holder.bind(story);
+        }
     }
 
     @Override
     public int getItemCount() {
-        return stories.size();
+        return loaded ? stories.size() : 1;
     }
 
     public void refresh(final Runnable runnable) {
@@ -78,6 +92,7 @@ public class TrendingStoryAdapter extends RecyclerView.Adapter<TrendingStoryAdap
 
             @Override
             public void onRequestSuccess(List<Story> res) {
+                loaded = true;
                 runnable.run();
                 if (curr != seq) {
                     Log.i("stories", "Out of date request");
@@ -101,7 +116,8 @@ public class TrendingStoryAdapter extends RecyclerView.Adapter<TrendingStoryAdap
                 @Override
                 public void onClick(View v) {
                     // TODO: eventbus
-                    activity.activateStory(story);
+                    if (story.getHref() != null)
+                        activity.activateStory(story);
                 }
             });
 
@@ -109,7 +125,8 @@ public class TrendingStoryAdapter extends RecyclerView.Adapter<TrendingStoryAdap
                 @Override
                 public boolean onLongClick(View v) {
                     // TODO: eventbus
-                    activity.showStoryMenu(story, v);
+                    if (story.getHref() != null)
+                        activity.showStoryMenu(story, v);
                     return true;
                 }
             });
@@ -117,6 +134,7 @@ public class TrendingStoryAdapter extends RecyclerView.Adapter<TrendingStoryAdap
 
         public void bind(Story story) {
             this.story = story;
+            itemView.setHasHref(story.getHref() != null);
             itemView.setTags(story.getTags());
             itemView.setText(story.getTitle());
             itemView.setIconsVisible(story.getHackerNewsUrl() != null,

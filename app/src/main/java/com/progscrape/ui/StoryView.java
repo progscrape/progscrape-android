@@ -27,6 +27,9 @@ public class StoryView extends LinearLayout {
     @InjectView(R.id.icon_reddit)
     ImageView reddit;
 
+    @InjectView(R.id.arrow)
+    ImageView arrow;
+
     @InjectView(R.id.tags)
     FlowLayout tags;
 
@@ -58,10 +61,16 @@ public class StoryView extends LinearLayout {
             tags.removeViewAt(tags.getChildCount() - 1);
         }
 
-        for (String tag : tagStrings) {
-            TextView textView = (TextView) LayoutInflater.from(getContext()).inflate(R.layout.story_tag_item, tags, false);
-            textView.setText(tag);
-            tags.addView(textView);
+        if (tagStrings != null) {
+            for (String tag : tagStrings) {
+                TextView textView = (TextView) LayoutInflater.from(getContext()).inflate(R.layout.story_tag_item, tags, false);
+                textView.setText(tag);
+                tags.addView(textView);
+            }
         }
+    }
+
+    public void setHasHref(boolean hasHref) {
+        this.arrow.setVisibility(hasHref ? View.VISIBLE : View.GONE);
     }
 }
