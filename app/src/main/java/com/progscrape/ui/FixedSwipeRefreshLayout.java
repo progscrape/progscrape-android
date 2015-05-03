@@ -14,6 +14,8 @@ import java.lang.reflect.Field;
 
 // https://code.google.com/p/android/issues/detail?id=78191
 public class FixedSwipeRefreshLayout extends SwipeRefreshLayout {
+    private Field targetField;
+
     public FixedSwipeRefreshLayout(Context context) {
         super(context);
     }
@@ -23,13 +25,24 @@ public class FixedSwipeRefreshLayout extends SwipeRefreshLayout {
     }
 
     @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+
+        try {
+            targetField = getClass().getSuperclass().getDeclaredField("mTarget");
+            targetField.setAccessible(true);
+        } catch (Exception e) {
+            // Should not happen
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public boolean canChildScrollUp() {
         View target;
 
         try {
-            Field f = getClass().getSuperclass().getDeclaredField("mTarget");
-            f.setAccessible(true);
-            target = (View) f.get(this);
+            target = (View) targetField.get(this);
         } catch (Exception e) {
             // Should not happen
             e.printStackTrace();

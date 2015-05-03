@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.PopupMenu;
+import android.widget.ShareActionProvider;
 
 import com.progscrape.app.data.Story;
 import com.progscrape.data.Data;
@@ -107,6 +108,8 @@ public class MainActivity extends Activity {
             popup.getMenu().findItem(R.id.hn).setVisible(false);
         if (story.getRedditUrl() == null)
             popup.getMenu().findItem(R.id.reddit).setVisible(false);
+        if (story.getLobstersUrl() == null)
+            popup.getMenu().findItem(R.id.lobsters).setVisible(false);
 
         int index = 0;
         for (String tag : story.getTags()) {
@@ -126,11 +129,22 @@ public class MainActivity extends Activity {
                 }
 
                 switch (item.getItemId()) {
+                    case R.id.menu_item_share:
+                        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                        shareIntent.setType("text/plain");
+                        shareIntent.putExtra(Intent.EXTRA_SUBJECT, story.getTitle());
+                        shareIntent.putExtra(Intent.EXTRA_TEXT, story.getHref());
+
+                        startActivity(Intent.createChooser(shareIntent, getResources().getText(R.string.send_post_to)));
+                        return false;
                     case R.id.hn:
                         url = story.getHackerNewsUrl();
                         break;
                     case R.id.reddit:
                         url = story.getRedditUrl();
+                        break;
+                    case R.id.lobsters:
+                        url = story.getLobstersUrl();
                         break;
                     case R.id.browser:
                         url = story.getHref();

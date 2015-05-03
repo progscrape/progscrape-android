@@ -28,6 +28,7 @@ public class FeedParser {
                 story.setTags(toStringList(rawStory.getArray("tags")));
                 story.setHackerNewsUrl(rawStory.getString("hnews"));
                 story.setRedditUrl(rawStory.getString("reddit"));
+                story.setLobstersUrl(rawStory.getString("lobsters"));
 
                 stories.add(story);
             }

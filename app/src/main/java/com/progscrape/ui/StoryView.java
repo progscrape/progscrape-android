@@ -27,6 +27,9 @@ public class StoryView extends LinearLayout {
     @InjectView(R.id.icon_reddit)
     ImageView reddit;
 
+    @InjectView(R.id.icon_lobsters)
+    ImageView lobsters;
+
     @InjectView(R.id.arrow)
     ImageView arrow;
 
@@ -50,9 +53,10 @@ public class StoryView extends LinearLayout {
         this.text.setText(text);
     }
 
-    public void setIconsVisible(boolean hn, boolean reddit) {
+    public void setIconsVisible(boolean hn, boolean reddit, boolean lobsters) {
         this.hn.setVisibility(hn ? View.VISIBLE : View.GONE);
         this.reddit.setVisibility(reddit ? View.VISIBLE : View.GONE);
+        this.lobsters.setVisibility(lobsters ? View.VISIBLE : View.GONE);
     }
 
     public void setTags(List<String> tagStrings) {

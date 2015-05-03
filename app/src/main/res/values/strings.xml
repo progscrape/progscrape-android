@@ -5,4 +5,6 @@
 
     <string name="open_drawer">Open the drawer</string>
     <string name="close_drawer">Close the drawer</string>
+
+    <string name="send_post_to">Share post</string>
 </resources>

@@ -12,6 +12,7 @@ public class Story {
     private List<String> tags;
     private String redditUrl;
     private String hackerNewsUrl;
+    private String lobstersUrl;
 
     public String getTitle() {
         return title;
@@ -51,5 +52,13 @@ public class Story {
 
     public void setHackerNewsUrl(String hackerNewsUrl) {
         this.hackerNewsUrl = hackerNewsUrl;
+    }
+
+    public String getLobstersUrl() {
+        return lobstersUrl;
+    }
+
+    public void setLobstersUrl(String lobstersUrl) {
+        this.lobstersUrl = lobstersUrl;
     }
 }

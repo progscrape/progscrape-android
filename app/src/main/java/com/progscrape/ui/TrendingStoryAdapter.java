@@ -138,7 +138,7 @@ public class TrendingStoryAdapter extends RecyclerView.Adapter<TrendingStoryAdap
             itemView.setTags(story.getTags());
             itemView.setText(story.getTitle());
             itemView.setIconsVisible(story.getHackerNewsUrl() != null,
-                    story.getRedditUrl() != null);
+                    story.getRedditUrl() != null, story.getLobstersUrl() != null);
         }
     }
 }

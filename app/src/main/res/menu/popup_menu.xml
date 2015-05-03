@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:auto="http://schemas.android.com/apk/res-auto"
+    >
+
+    <item
+        android:id="@+id/menu_item_share"
+        android:title="Share" />
 
     <item
         android:id="@+id/hn"
@@ -8,6 +15,10 @@
     <item
         android:id="@+id/reddit"
         android:title="Open Reddit comments..." />
+
+    <item
+        android:id="@+id/lobsters"
+        android:title="Open lobste.rs comments..." />
 
     <item
         android:id="@+id/browser"
