@@ -1,4 +1,6 @@
 <resources>
     <color name="status_bar">#ff1976d2</color>
     <color name="status_bar_translucent">#aa333333</color>
+    <color name="tag_background">#ffbbbbbb</color>
+    <color name="tag_foreground">#ffffffff</color>
 </resources>

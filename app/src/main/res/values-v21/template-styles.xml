@@ -7,5 +7,4 @@
         <item name="android:statusBarColor">@color/status_bar_translucent</item>
         <item name="android:navigationBarColor">@color/status_bar_translucent</item>
     </style>
-
 </resources>

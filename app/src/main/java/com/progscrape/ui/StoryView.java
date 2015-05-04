@@ -61,15 +61,15 @@ public class StoryView extends LinearLayout {
 
     public void setTags(List<String> tagStrings) {
         // Clear out the old tags
-        while (tags.getChildAt(tags.getChildCount() - 1) instanceof TextView) {
+        while (tags.getChildAt(tags.getChildCount() - 1) instanceof LinearLayout) {
             tags.removeViewAt(tags.getChildCount() - 1);
         }
 
         if (tagStrings != null) {
             for (String tag : tagStrings) {
-                TextView textView = (TextView) LayoutInflater.from(getContext()).inflate(R.layout.story_tag_item, tags, false);
-                textView.setText(tag);
-                tags.addView(textView);
+                View view = LayoutInflater.from(getContext()).inflate(R.layout.story_tag_item, tags, false);
+                ((TextView)view.findViewById(R.id.tag_text)).setText(tag);
+                tags.addView(view);
             }
         }
     }

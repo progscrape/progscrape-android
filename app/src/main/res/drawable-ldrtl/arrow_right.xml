@@ -9,8 +9,8 @@
 
     <item android:bottom="20dp">
         <rotate
-            android:fromDegrees="-45"
-            android:toDegrees="45">
+            android:fromDegrees="45"
+            android:toDegrees="-45">
             <shape android:shape="rectangle">
                 <solid android:color="@android:color/black"/>
                 <corners
@@ -23,8 +23,8 @@
 
     <item android:top="20dp">
         <rotate
-            android:fromDegrees="45"
-            android:toDegrees="45">
+            android:fromDegrees="-45"
+            android:toDegrees="-45">
             <shape android:shape="rectangle">
                 <solid android:color="@android:color/black"/>
                 <corners

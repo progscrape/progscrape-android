@@ -32,7 +32,7 @@
                     android:id="@+id/toolbar_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text=">progscrape "
+                    android:text="@string/main_title"
                     android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
                     android:drawableRight="@drawable/toolbar_icon"
                     />

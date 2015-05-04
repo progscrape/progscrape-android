@@ -7,4 +7,9 @@
     <string name="close_drawer">Close the drawer</string>
 
     <string name="send_post_to">Share post</string>
+    <string name="right_arrow">Right arrow</string>
+    <string name="hackernews">Hacker News</string>
+    <string name="lobsters">Lobsters</string>
+    <string name="reddit">Reddit</string>
+    <string name="main_title"><![CDATA[>progscrape]]></string>
 </resources>
