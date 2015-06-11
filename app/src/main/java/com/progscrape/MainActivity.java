@@ -1,6 +1,5 @@
 package com.progscrape;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -14,12 +13,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.PopupMenu;
-import android.widget.ShareActionProvider;
 
 import com.progscrape.app.data.Story;
 import com.progscrape.data.Data;
 import com.progscrape.modules.Injector;
 import com.progscrape.modules.MainActivityModule;
+import com.progscrape.ui.ActivityComponent;
 import com.progscrape.ui.StoriesFragment;
 import com.progscrape.ui.WebViewFragment;
 
@@ -27,9 +26,8 @@ import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import dagger.ObjectGraph;
 
-public class MainActivity extends Activity {
+public class MainActivity extends BaseActivity {
     @Inject
     protected Data data;
 
@@ -39,16 +37,16 @@ public class MainActivity extends Activity {
     @InjectView(R.id.top_level_view)
     protected View topLevel;
 
-    private ObjectGraph activityGraph;
+    private ActivityComponent activityGraph;
 
     public MainActivity() {
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        ObjectGraph appGraph = Injector.obtain(getApplication());
-        appGraph.inject(this);
+        AppComponent appGraph = Injector.obtain(getApplicationContext(), AppComponent.class);
         activityGraph = appGraph.plus(new MainActivityModule(this));
+        activityGraph.inject(this);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.app);
@@ -74,6 +72,7 @@ public class MainActivity extends Activity {
     }
 
     public void activateStory(Story story) {
+
         Fragment f = WebViewFragment.newInstance(story);
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction tx = fragmentManager.beginTransaction();

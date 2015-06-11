@@ -1,24 +1,13 @@
 package com.progscrape.modules;
 
-import android.app.Application;
-
 import com.progscrape.App;
+
+import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
 
-import javax.inject.Singleton;
-
-@Module(
-        includes = {
-                UiModule.class,
-                DataModule.class
-        },
-        injects = {
-                App.class
-        },
-        library = true
-)
+@Module
 public final class AppModule {
     private final App app;
 
@@ -28,7 +17,7 @@ public final class AppModule {
 
     @Provides
     @Singleton
-    Application provideApplication() {
+    App provideApplication() {
         return app;
     }
 }

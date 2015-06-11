@@ -3,7 +3,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.2.0'
+        classpath 'com.android.tools.build:gradle:1.2.3'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.4'
     }
 }
@@ -11,7 +11,7 @@ buildscript {
 // Manifest version information!
 def versionMajor = 1
 def versionMinor = 0
-def versionPatch = 2
+def versionPatch = 4
 def versionBuild = 0 // bump for dogfood builds, public betas, etc.
 
 apply plugin: 'com.android.application'
@@ -105,9 +105,12 @@ dependencies {
     compile 'com.octo.android.robospice:robospice:1.4.14'
     compile 'com.octo.android.robospice:robospice-okhttp:1.4.14'
     compile 'com.grack:nanojson:1.0'
+    compile 'com.google.guava:guava:18.0'
 
-    compile 'com.squareup.dagger:dagger:1.2.2'
-    apt 'com.squareup.dagger:dagger-compiler:1.2.2'
+    // https://github.com/google/dagger/issues/95
+    compile 'org.glassfish:javax.annotation:10.0-b28'
+    compile 'com.google.dagger:dagger:2.0'
+    apt 'com.google.dagger:dagger-compiler:2.0'
 
     compile 'com.jakewharton:butterknife:6.1.0'
     compile 'com.jakewharton.timber:timber:3.0.0'

@@ -18,9 +18,12 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.common.collect.ImmutableMap;
 import com.progscrape.MainActivity;
 import com.progscrape.R;
 import com.progscrape.modules.Injector;
+
+import java.util.HashMap;
 
 import javax.inject.Inject;
 
@@ -41,6 +44,7 @@ public class BrowserView extends LinearLayout implements ActivityPauseNotifier.A
     MainActivity activity;
 
     private String titleText;
+    private String href;
 
     public BrowserView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -48,13 +52,14 @@ public class BrowserView extends LinearLayout implements ActivityPauseNotifier.A
         if (isInEditMode())
             return;
 
-        Injector.obtain(context).inject(this);
+        Injector.obtain(context, ActivityComponent.class).inject(this);
     }
 
     @Override
     protected Parcelable onSaveInstanceState() {
         Bundle bundle = new Bundle();
         bundle.putString("title", titleText);
+        bundle.putString("href", href);
         bundle.putParcelable("super", super.onSaveInstanceState());
         Bundle web = new Bundle();
         bundle.putBundle("browser", web);
@@ -66,6 +71,7 @@ public class BrowserView extends LinearLayout implements ActivityPauseNotifier.A
     protected void onRestoreInstanceState(Parcelable state) {
         Bundle bundle = (Bundle) state;
         super.onRestoreInstanceState(bundle.getParcelable("super"));
+        this.href = bundle.getString("href");
         this.title.setText(titleText = bundle.getString("title"));
         browser.restoreState(bundle.getBundle("browser"));
     }
@@ -143,7 +149,10 @@ public class BrowserView extends LinearLayout implements ActivityPauseNotifier.A
 
     public void setPage(String href, String title) {
         this.titleText = title;
-        this.browser.loadUrl(href);
+        if (this.href == null || !this.href.equals(href)) {
+            this.href = href;
+            this.browser.loadUrl(href, new HashMap<>(ImmutableMap.of("Referer", "http://www.progscrape.com/")));
+        }
         this.title.setText(title);
     }
 }

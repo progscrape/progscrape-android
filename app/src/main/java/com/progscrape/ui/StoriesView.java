@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Parcelable;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -52,7 +51,7 @@ public class StoriesView extends LinearLayout implements SwipeRefreshLayout.OnRe
     public StoriesView(Context context, AttributeSet attrs) {
         super(context, attrs);
         if (!isInEditMode())
-            Injector.obtain(context).inject(this);
+            Injector.obtain(context, ActivityComponent.class).inject(this);
     }
 
     @Override

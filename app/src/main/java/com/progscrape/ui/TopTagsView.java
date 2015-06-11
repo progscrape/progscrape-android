@@ -32,7 +32,7 @@ public class TopTagsView extends LinearLayout {
     public TopTagsView(Context context, AttributeSet attrs) {
         super(context, attrs);
         if (!isInEditMode())
-            Injector.obtain(context).inject(this);
+            Injector.obtain(context, ActivityComponent.class).inject(this);
     }
 
     @Override protected void onFinishInflate() {

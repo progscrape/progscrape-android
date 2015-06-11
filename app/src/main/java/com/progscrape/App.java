@@ -8,13 +8,12 @@ import com.progscrape.modules.Injector;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
-import dagger.ObjectGraph;
 import timber.log.Timber;
 
 import static timber.log.Timber.DebugTree;
 
 public final class App extends Application {
-    private ObjectGraph objectGraph;
+    private AppComponent appComponent;
 
     @Override
     public void onCreate() {
@@ -28,14 +27,14 @@ public final class App extends Application {
             // TODO Timber.plant(new CrashlyticsTree());
         }
 
-        objectGraph = ObjectGraph.create(new AppModule(this));
-        objectGraph.inject(this);
+        GlobalComponent globalComponent = DaggerGlobalComponent.builder().build();
+        appComponent = globalComponent.appComponent(new AppModule(this));
     }
 
     @Override
     public Object getSystemService(@NonNull String name) {
         if (Injector.matchesService(name))
-            return objectGraph;
+            return appComponent;
 
         return super.getSystemService(name);
     }

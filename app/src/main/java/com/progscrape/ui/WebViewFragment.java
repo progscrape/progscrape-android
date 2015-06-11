@@ -50,6 +50,8 @@ public class WebViewFragment extends Fragment {
             href = savedInstanceState.getString("href");
             title = savedInstanceState.getString("title");
         }
+
+        browser.setPage(href, title);
     }
 
     @OnClick(R.id.back)
@@ -79,7 +81,5 @@ public class WebViewFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         ButterKnife.inject(this, getView());
-
-        browser.setPage(href, title);
     }
 }

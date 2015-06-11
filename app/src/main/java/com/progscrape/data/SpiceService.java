@@ -1,16 +1,10 @@
 package com.progscrape.data;
 
 import android.app.Application;
-import android.content.Intent;
 
 import com.octo.android.robospice.okhttp.OkHttpSpiceService;
 import com.octo.android.robospice.persistence.CacheManager;
 import com.octo.android.robospice.persistence.exception.CacheCreationException;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.inject.Inject;
 
 public class SpiceService extends OkHttpSpiceService {
     @Override
