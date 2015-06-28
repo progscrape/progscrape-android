@@ -26,6 +26,10 @@ public class TrendingStoryAdapter extends RecyclerView.Adapter<TrendingStoryAdap
     private String tag;
     private int seq = 0;
 
+    public interface RefreshCallback {
+        void complete(boolean success);
+    }
+
     public TrendingStoryAdapter(Context context, Data data, MainActivity activity) {
         this.context = context;
         this.data = data;
@@ -82,18 +86,19 @@ public class TrendingStoryAdapter extends RecyclerView.Adapter<TrendingStoryAdap
         return loaded ? stories.size() : 1;
     }
 
-    public void refresh(final Runnable runnable) {
+    public void refresh(final RefreshCallback callback) {
         final int curr = ++seq;
         data.getStoryData(tag, new RequestListener<List<Story>>() {
             @Override
             public void onRequestFailure(SpiceException spiceException) {
                 Log.e("stories", "Failed to retrieve stories", spiceException);
+                callback.complete(false);
             }
 
             @Override
             public void onRequestSuccess(List<Story> res) {
                 loaded = true;
-                runnable.run();
+                callback.complete(true);
                 if (curr != seq) {
                     Log.i("stories", "Out of date request");
                     return;

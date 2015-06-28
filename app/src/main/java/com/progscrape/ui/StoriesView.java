@@ -10,8 +10,10 @@ import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.progscrape.MainActivity;
 import com.progscrape.R;
@@ -134,10 +136,15 @@ public class StoriesView extends LinearLayout implements SwipeRefreshLayout.OnRe
 
     @Override
     public void onRefresh() {
-        adapter.refresh(new Runnable() {
+        adapter.refresh(new TrendingStoryAdapter.RefreshCallback() {
             @Override
-            public void run() {
+            public void complete(boolean success) {
                 refresh.setRefreshing(false);
+
+                if (!success) {
+                    Toast toast = Toast.makeText(getContext(), "Failed to refresh stories, please try again.", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
             }
         });
     }
