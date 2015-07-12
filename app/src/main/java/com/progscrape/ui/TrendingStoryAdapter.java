@@ -2,17 +2,13 @@ package com.progscrape.ui;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.octo.android.robospice.persistence.exception.SpiceException;
-import com.octo.android.robospice.request.listener.RequestListener;
 import com.progscrape.MainActivity;
 import com.progscrape.R;
 import com.progscrape.app.data.Story;
-import com.progscrape.data.Data;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,43 +16,14 @@ import java.util.List;
 public class TrendingStoryAdapter extends RecyclerView.Adapter<TrendingStoryAdapter.ViewHolder> {
     private boolean loaded;
     private Context context;
-    private Data data;
     private MainActivity activity;
     private List<Story> stories = new ArrayList<>();
-    private String tag;
-    private int seq = 0;
+    private boolean errorState;
 
-    public interface RefreshCallback {
-        void complete(boolean success);
-    }
-
-    public TrendingStoryAdapter(Context context, Data data, MainActivity activity) {
+    public TrendingStoryAdapter(Context context, MainActivity activity) {
         this.context = context;
-        this.data = data;
         this.activity = activity;
         loaded = false;
-    }
-
-    public void setTag(String tag) {
-        this.tag = tag;
-        final int curr = ++seq;
-        data.getStoryData(tag, new RequestListener<List<Story>>() {
-            @Override
-            public void onRequestFailure(SpiceException spiceException) {
-                Log.e("stories", "Failed to retrieve stories", spiceException);
-            }
-
-            @Override
-            public void onRequestSuccess(List<Story> res) {
-                loaded = true;
-                if (curr != seq) {
-                    Log.i("stories", "Out of date request");
-                    return;
-                }
-                stories = res;
-                notifyDataSetChanged();
-            }
-        }, false);
     }
 
     @Override
@@ -76,7 +43,7 @@ public class TrendingStoryAdapter extends RecyclerView.Adapter<TrendingStoryAdap
             holder.bind(stories.get(position));
         } else {
             Story story = new Story();
-            story.setTitle("Loading...");
+            story.setTitle(errorState ? "Failed to load stories" : "Loading...");
             holder.bind(story);
         }
     }
@@ -86,27 +53,15 @@ public class TrendingStoryAdapter extends RecyclerView.Adapter<TrendingStoryAdap
         return loaded ? stories.size() : 1;
     }
 
-    public void refresh(final RefreshCallback callback) {
-        final int curr = ++seq;
-        data.getStoryData(tag, new RequestListener<List<Story>>() {
-            @Override
-            public void onRequestFailure(SpiceException spiceException) {
-                Log.e("stories", "Failed to retrieve stories", spiceException);
-                callback.complete(false);
-            }
+    public void setStories(List<Story> stories) {
+        loaded = true;
+        this.stories = stories;
+        notifyDataSetChanged();
+    }
 
-            @Override
-            public void onRequestSuccess(List<Story> res) {
-                loaded = true;
-                callback.complete(true);
-                if (curr != seq) {
-                    Log.i("stories", "Out of date request");
-                    return;
-                }
-                stories = res;
-                notifyDataSetChanged();
-            }
-        }, true);
+    public void setErrorState() {
+        loaded = false;
+        errorState = true;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

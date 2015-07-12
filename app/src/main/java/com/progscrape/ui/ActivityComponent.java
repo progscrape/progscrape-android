@@ -11,6 +11,8 @@ import dagger.Subcomponent;
 public interface ActivityComponent {
     void inject(MainActivity mainActivity);
 
+    void inject(StoriesFragment storiesFragment);
+
     void inject(BrowserView browserView);
 
     void inject(TopTagsView topTagsView);

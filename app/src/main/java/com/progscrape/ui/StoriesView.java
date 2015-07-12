@@ -26,10 +26,7 @@ import butterknife.InjectView;
 import icepick.Icepick;
 import icepick.Icicle;
 
-public class StoriesView extends LinearLayout implements SwipeRefreshLayout.OnRefreshListener {
-    @InjectView(R.id.swipe_refresh)
-    protected SwipeRefreshLayout refresh;
-
+public class StoriesView extends LinearLayout {
     @InjectView(R.id.story_recycler)
     protected RecyclerView stories;
 
@@ -38,6 +35,9 @@ public class StoriesView extends LinearLayout implements SwipeRefreshLayout.OnRe
 
     @InjectView(R.id.toolbar_title)
     protected TextView title;
+
+    @InjectView(R.id.swipe_refresh)
+    protected SwipeRefreshLayout refresh;
 
     @Inject
     protected TrendingStoryAdapterFactory storiesAdapterFactory;
@@ -77,8 +77,6 @@ public class StoriesView extends LinearLayout implements SwipeRefreshLayout.OnRe
 
         ButterKnife.inject(this);
 
-        refresh.setOnRefreshListener(this);
-
         adapter = storiesAdapterFactory.create(getContext());
         stories.setAdapter(adapter);
         stories.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -104,7 +102,6 @@ public class StoriesView extends LinearLayout implements SwipeRefreshLayout.OnRe
     }
 
     public void setTag(String tag) {
-        adapter.setTag(tag);
         if (tag != null) {
             toolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
             title.setText(tag);
@@ -132,21 +129,6 @@ public class StoriesView extends LinearLayout implements SwipeRefreshLayout.OnRe
                 }
             });
         }
-    }
-
-    @Override
-    public void onRefresh() {
-        adapter.refresh(new TrendingStoryAdapter.RefreshCallback() {
-            @Override
-            public void complete(boolean success) {
-                refresh.setRefreshing(false);
-
-                if (!success) {
-                    Toast toast = Toast.makeText(getContext(), "Failed to refresh stories, please try again.", Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-            }
-        });
     }
 
     private LinearLayoutManager getLayoutManager() {
