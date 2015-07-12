@@ -61,6 +61,14 @@ public class StoriesFragment extends Fragment implements SwipeRefreshLayout.OnRe
     public void onStop() {
         super.onStop();
         refresh.setRefreshing(false);
+        Log.i("stories", "StoriesFragment stopped");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        refresh.setRefreshing(false);
+        Log.i("stories", "StoriesFragment paused");
     }
 
     public static StoriesFragment create(String tag) {
@@ -112,6 +120,7 @@ public class StoriesFragment extends Fragment implements SwipeRefreshLayout.OnRe
                     return;
                 }
 
+                Log.i("stories", "Completed request");
                 refresh.setRefreshing(false);
                 getTrendingStoryAdapter().setStories(res);
             }

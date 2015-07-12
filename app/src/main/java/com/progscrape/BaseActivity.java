@@ -23,11 +23,18 @@ public class BaseActivity extends Activity {
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        if (spiceManager != null && !spiceManager.isStarted()) {
+            spiceManager.start(this);
+        }
+    }
+
+    @Override
     protected void onStop() {
         super.onStop();
         if (spiceManager != null) {
             spiceManager.shouldStop();
-            spiceManager = null;
         }
     }
 }
