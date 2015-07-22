@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import com.progscrape.MainActivity;
 import com.progscrape.R;
 import com.progscrape.app.data.Story;
+import com.progscrape.event.StoryEvent;
+import com.squareup.otto.Bus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,13 +18,13 @@ import java.util.List;
 public class TrendingStoryAdapter extends RecyclerView.Adapter<TrendingStoryAdapter.ViewHolder> {
     private boolean loaded;
     private Context context;
-    private MainActivity activity;
+    private Bus bus;
     private List<Story> stories = new ArrayList<>();
     private boolean errorState;
 
-    public TrendingStoryAdapter(Context context, MainActivity activity) {
+    public TrendingStoryAdapter(Context context, Bus bus) {
         this.context = context;
-        this.activity = activity;
+        this.bus = bus;
         loaded = false;
     }
 
@@ -68,25 +70,23 @@ public class TrendingStoryAdapter extends RecyclerView.Adapter<TrendingStoryAdap
         private StoryView itemView;
         private Story story;
 
-        public ViewHolder(StoryView itemView) {
+        public ViewHolder(final StoryView itemView) {
             super(itemView);
             this.itemView = itemView;
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // TODO: eventbus
                     if (story.getHref() != null)
-                        activity.activateStory(story);
+                        bus.post(new StoryEvent(story, StoryEvent.What.ACTIVATE));
                 }
             });
 
             itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    // TODO: eventbus
                     if (story.getHref() != null)
-                        activity.showStoryMenu(story, v);
+                        bus.post(new StoryEvent(story, itemView, StoryEvent.What.MENU));
                     return true;
                 }
             });

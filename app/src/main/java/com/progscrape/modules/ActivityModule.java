@@ -4,6 +4,7 @@ import android.app.Activity;
 
 import com.octo.android.robospice.SpiceManager;
 import com.progscrape.BaseActivity;
+import com.squareup.otto.Bus;
 
 import dagger.Module;
 import dagger.Provides;
@@ -15,6 +16,9 @@ public abstract class ActivityModule<T extends BaseActivity> {
     public ActivityModule(T activity) {
         this.activity = activity;
     }
+
+    @Provides @ActivityScope
+    public Bus bus() { return new Bus(); }
 
     @Provides @ActivityScope
     public SpiceManager spiceManager() {

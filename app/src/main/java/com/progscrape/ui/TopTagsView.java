@@ -14,7 +14,9 @@ import com.octo.android.robospice.request.listener.RequestListener;
 import com.progscrape.MainActivity;
 import com.progscrape.R;
 import com.progscrape.data.Data;
+import com.progscrape.event.SearchEvent;
 import com.progscrape.modules.Injector;
+import com.squareup.otto.Bus;
 
 import java.util.List;
 
@@ -27,7 +29,7 @@ public class TopTagsView extends LinearLayout {
     protected Data data;
 
     @Inject
-    protected MainActivity activity;
+    protected Bus bus;
 
     public TopTagsView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -70,7 +72,7 @@ public class TopTagsView extends LinearLayout {
         item.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                activity.searchTag(tag, false);
+                bus.post(new SearchEvent(tag, false));
             }
         });
 

@@ -10,14 +10,13 @@ import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.progscrape.MainActivity;
+import com.progscrape.event.ActivityEvent;
 import com.progscrape.R;
 import com.progscrape.modules.Injector;
+import com.squareup.otto.Bus;
 
 import javax.inject.Inject;
 
@@ -43,7 +42,7 @@ public class StoriesView extends LinearLayout {
     protected TrendingStoryAdapterFactory storiesAdapterFactory;
 
     @Inject
-    protected MainActivity activity;
+    protected Bus bus;
 
     @Icicle
     Parcelable scrollPos = null;
@@ -109,7 +108,7 @@ public class StoriesView extends LinearLayout {
             toolbar.setNavigationOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    activity.getFragmentManager().popBackStack();
+                    bus.post(ActivityEvent.POP_BACK);
                 }
             });
         } else {
@@ -125,7 +124,7 @@ public class StoriesView extends LinearLayout {
             toolbar.setNavigationOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    activity.openDrawer();
+                    bus.post(ActivityEvent.TOGGLE_DRAWER);
                 }
             });
         }
@@ -133,5 +132,9 @@ public class StoriesView extends LinearLayout {
 
     private LinearLayoutManager getLayoutManager() {
         return (LinearLayoutManager)stories.getLayoutManager();
+    }
+
+    public void scrollToTop() {
+        stories.smoothScrollToPosition(0);
     }
 }

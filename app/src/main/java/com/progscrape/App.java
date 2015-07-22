@@ -2,6 +2,7 @@ package com.progscrape;
 
 import android.app.Application;
 import android.support.annotation.NonNull;
+import android.view.WindowManager;
 
 import com.progscrape.modules.AppModule;
 import com.progscrape.modules.Injector;

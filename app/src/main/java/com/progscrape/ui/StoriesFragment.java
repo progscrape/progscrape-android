@@ -16,7 +16,10 @@ import com.octo.android.robospice.request.listener.RequestListener;
 import com.progscrape.R;
 import com.progscrape.app.data.Story;
 import com.progscrape.data.Data;
+import com.progscrape.event.ActivityEvent;
 import com.progscrape.modules.Injector;
+import com.squareup.otto.Bus;
+import com.squareup.otto.Subscribe;
 
 import java.util.List;
 
@@ -24,6 +27,7 @@ import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 
 public class StoriesFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     private String tag;
@@ -41,20 +45,40 @@ public class StoriesFragment extends Fragment implements SwipeRefreshLayout.OnRe
     @Inject
     protected Data data;
 
+    @Inject
+    protected Bus bus;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.stories, container, false);
     }
 
+    @OnClick(R.id.toolbar)
+    protected void onClickToolbar() {
+        bus.post(ActivityEvent.SCROLL_TO_TOP);
+    }
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         ButterKnife.inject(this, getView());
-        Injector.obtain(getActivity(), ActivityComponent.class).inject(this);
 
         setTag(getArguments().getString("tag"));
         refresh.setOnRefreshListener(this);
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        Injector.obtain(getActivity(), ActivityComponent.class).inject(this);
+        super.onCreate(savedInstanceState);
+        bus.register(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        bus.unregister(this);
     }
 
     @Override
@@ -69,6 +93,15 @@ public class StoriesFragment extends Fragment implements SwipeRefreshLayout.OnRe
         super.onPause();
         refresh.setRefreshing(false);
         Log.i("stories", "StoriesFragment paused");
+    }
+
+    @Subscribe
+    public void onActivityEvent(ActivityEvent what) {
+        switch (what) {
+            case SCROLL_TO_TOP:
+                stories.scrollToTop();
+                break;
+        }
     }
 
     public static StoriesFragment create(String tag) {

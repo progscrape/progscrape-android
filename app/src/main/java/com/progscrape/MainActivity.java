@@ -16,16 +16,22 @@ import android.widget.PopupMenu;
 
 import com.progscrape.app.data.Story;
 import com.progscrape.data.Data;
+import com.progscrape.event.ActivityEvent;
+import com.progscrape.event.SearchEvent;
+import com.progscrape.event.StoryEvent;
 import com.progscrape.modules.Injector;
 import com.progscrape.modules.MainActivityModule;
 import com.progscrape.ui.ActivityComponent;
 import com.progscrape.ui.StoriesFragment;
 import com.progscrape.ui.WebViewFragment;
+import com.squareup.otto.Bus;
+import com.squareup.otto.Subscribe;
 
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 
 public class MainActivity extends BaseActivity {
     @Inject
@@ -36,6 +42,9 @@ public class MainActivity extends BaseActivity {
 
     @InjectView(R.id.top_level_view)
     protected View topLevel;
+
+    @Inject
+    protected Bus bus;
 
     private ActivityComponent activityGraph;
 
@@ -55,10 +64,13 @@ public class MainActivity extends BaseActivity {
 
         if (savedInstanceState == null)
             searchTag(null, true);
+
+        bus.register(this);
     }
 
     @Override
     protected void onDestroy() {
+        bus.unregister(this);
         activityGraph = null;
         super.onDestroy();
     }
@@ -71,8 +83,37 @@ public class MainActivity extends BaseActivity {
         return super.getSystemService(name);
     }
 
-    public void activateStory(Story story) {
+    @Subscribe
+    public void onStoryEvent(StoryEvent storyEvent) {
+        switch (storyEvent.getWhat()) {
+            case ACTIVATE:
+                activateStory(storyEvent.getStory());
+                break;
+            case MENU:
+                showStoryMenu(storyEvent.getStory(), storyEvent.getView());
+                break;
+        }
+    }
 
+    @Subscribe
+    public void onActivityEvent(ActivityEvent what) {
+        switch (what) {
+            case POP_BACK:
+                getFragmentManager().popBackStack();
+                break;
+            case TOGGLE_DRAWER:
+                openDrawer();
+                break;
+        }
+    }
+
+    @Subscribe
+    @SuppressWarnings("unused")
+    public void onSearchEvent(SearchEvent searchEvent) {
+        searchTag(searchEvent.getTag(), searchEvent.isInitial());
+    }
+
+    protected void activateStory(Story story) {
         Fragment f = WebViewFragment.newInstance(story);
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction tx = fragmentManager.beginTransaction();
@@ -84,7 +125,7 @@ public class MainActivity extends BaseActivity {
         tx.commit();
     }
 
-    public void searchTag(String tag, boolean initial) {
+    protected void searchTag(String tag, boolean initial) {
         Log.i("main", "Setting search fragment to " + tag);
 
         FragmentTransaction tx = getFragmentManager().beginTransaction();
@@ -96,12 +137,12 @@ public class MainActivity extends BaseActivity {
         drawerLayout.closeDrawers();
     }
 
-    public void openDrawer() {
+    protected void openDrawer() {
         drawerLayout.openDrawer(Gravity.LEFT);
     }
 
-    public void showStoryMenu(final Story story, View view) {
-        PopupMenu popup = new PopupMenu(this, view);
+    protected void showStoryMenu(final Story story, View view) {
+        PopupMenu popup = new PopupMenu(getBaseContext(), view);
         popup.getMenuInflater().inflate(R.menu.popup_menu, popup.getMenu());
         if (story.getHackerNewsUrl() == null)
             popup.getMenu().findItem(R.id.hn).setVisible(false);
