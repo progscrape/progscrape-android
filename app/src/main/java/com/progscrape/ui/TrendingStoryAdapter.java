@@ -86,7 +86,7 @@ public class TrendingStoryAdapter extends RecyclerView.Adapter<TrendingStoryAdap
                 @Override
                 public boolean onLongClick(View v) {
                     if (story.getHref() != null)
-                        bus.post(new StoryEvent(story, itemView, StoryEvent.What.MENU));
+                        bus.post(new StoryEvent(story, v, StoryEvent.What.MENU));
                     return true;
                 }
             });

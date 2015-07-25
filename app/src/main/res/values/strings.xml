@@ -11,5 +11,5 @@
     <string name="hackernews">Hacker News</string>
     <string name="lobsters">Lobsters</string>
     <string name="reddit">Reddit</string>
-    <string name="main_title"><![CDATA[>progscrape]]></string>
+    <string name="main_title"><![CDATA[>progscrape]]>&#x00a0;</string>
 </resources>

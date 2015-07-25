@@ -142,7 +142,7 @@ public class MainActivity extends BaseActivity {
     }
 
     protected void showStoryMenu(final Story story, View view) {
-        PopupMenu popup = new PopupMenu(getBaseContext(), view);
+        PopupMenu popup = new PopupMenu(this, view);
         popup.getMenuInflater().inflate(R.menu.popup_menu, popup.getMenu());
         if (story.getHackerNewsUrl() == null)
             popup.getMenu().findItem(R.id.hn).setVisible(false);
