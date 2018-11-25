@@ -14,7 +14,7 @@
 
         <!-- We use a Toolbar so that our drawer can be displayed
                  in front of the action bar -->
-        <android.support.v7.widget.Toolbar
+        <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_height="?attr/actionBarSize"
             android:layout_width="match_parent"
@@ -38,7 +38,7 @@
                     />
 
             </LinearLayout>
-        </android.support.v7.widget.Toolbar>
+        </androidx.appcompat.widget.Toolbar>
 
         <com.progscrape.ui.FixedSwipeRefreshLayout
             android:id="@+id/swipe_refresh"
@@ -49,13 +49,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <android.support.v7.widget.RecyclerView
+                <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/story_recycler"
                     android:scrollbars="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                </android.support.v7.widget.RecyclerView>
+                </androidx.recyclerview.widget.RecyclerView>
 
                 <RelativeLayout
                     android:id="@+id/error"
