@@ -1,10 +1,11 @@
 buildscript {
     repositories {
         mavenCentral()
+        google()
+        jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.2.3'
-        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.4'
+        classpath 'com.android.tools.build:gradle:3.2.1'
     }
 }
 
@@ -15,22 +16,22 @@ def versionPatch = 10
 def versionBuild = 0 // bump for dogfood builds, public betas, etc.
 
 apply plugin: 'com.android.application'
-apply plugin: 'com.neenbedankt.android-apt'
 
 repositories {
     mavenCentral()
+    google()
     maven { url "https://clojars.org/repo/" }
 }
 
 def gitSha = 'git rev-parse --short HEAD'.execute([], project.rootDir).text.trim()
 def buildTime = new Date().format("yyyy-MM-dd'T'HH:mm'Z'", TimeZone.getTimeZone("UTC"))
 
-def isTravis = "true".equals(System.getenv("TRAVIS"))
-def preDexEnabled = "true".equals(System.getProperty("pre-dex", "true"))
+def isTravis = "true" == System.getenv("TRAVIS")
+def preDexEnabled = "true" == System.getProperty("pre-dex", "true")
 
 android {
-    compileSdkVersion 21
-    buildToolsVersion '22.0.1'
+    compileSdkVersion 26
+    buildToolsVersion '28.0.3'
 
     dexOptions {
         // Skip pre-dexing when running on Travis CI or when disabled via -Dpre-dex=false.
@@ -48,7 +49,7 @@ android {
 
     defaultConfig {
         minSdkVersion 19
-        targetSdkVersion 22
+        targetSdkVersion 26
 
         versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
@@ -65,12 +66,16 @@ android {
         }
     }
 
+    flavorDimensions "version"
+
     productFlavors {
         internal {
             applicationId 'com.progscrape.internal'
+            dimension "version"
         }
         production {
             applicationId 'com.progscrape'
+            dimension "version"
         }
     }
 
@@ -97,33 +102,34 @@ configurations {
 }
 
 dependencies {
-    compile project(':data')
-    compile 'com.android.support:support-v4:22.0.0'
-    compile 'com.android.support:support-annotations:22.0.0'
-    compile 'com.android.support:appcompat-v7:22.0.0'
-    compile 'com.android.support:recyclerview-v7:22.0.0'
-    compile 'com.octo.android.robospice:robospice:1.4.14'
-    compile 'com.octo.android.robospice:robospice-okhttp:1.4.14'
-    compile 'com.grack:nanojson:1.0'
-    compile 'com.google.guava:guava:18.0'
-    compile 'com.squareup:otto:1.3.8'
+    implementation project(':data')
+    implementation 'com.android.support:support-v4:26.1.0'
+    implementation 'com.android.support:support-annotations:28.0.0'
+    implementation 'com.android.support:appcompat-v7:26.1.0'
+    implementation 'com.android.support:recyclerview-v7:26.1.0'
+    implementation 'com.octo.android.robospice:robospice:1.4.14'
+    implementation 'com.octo.android.robospice:robospice-okhttp:1.4.14'
+    implementation 'com.grack:nanojson:1.0'
+    implementation 'com.google.guava:guava:18.0'
+    implementation 'com.squareup:otto:1.3.8'
 
     // https://github.com/google/dagger/issues/95
-    compile 'org.glassfish:javax.annotation:10.0-b28'
-    compile 'com.google.dagger:dagger:2.0'
-    apt 'com.google.dagger:dagger-compiler:2.0'
+    implementation 'org.glassfish:javax.annotation:10.0-b28'
+    implementation 'com.google.dagger:dagger:2.0'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.0'
 
-    compile 'com.jakewharton:butterknife:6.1.0'
-    compile 'com.jakewharton.timber:timber:3.0.0'
-    compile 'io.reactivex:rxandroid:0.24.0'
-    compile 'net.danlew:android.joda:2.7.1'
-    compile 'org.apmem.tools:layouts:1.8@aar'
+    implementation 'com.jakewharton:butterknife:6.1.0'
+    annotationProcessor 'com.jakewharton:butterknife:6.1.0'
+    implementation 'com.jakewharton.timber:timber:3.0.0'
+    implementation 'io.reactivex:rxandroid:0.24.0'
+    implementation 'net.danlew:android.joda:2.7.1'
+    implementation 'org.apmem.tools:layouts:1.8@aar'
 
-    compile 'frankiesardo:icepick:3.0.2'
-    apt 'frankiesardo:icepick-processor:3.0.2'
+    implementation 'frankiesardo:icepick:3.0.2'
+    annotationProcessor 'frankiesardo:icepick-processor:3.0.2'
 
-    testCompile 'junit:junit:4.12'
-    testCompile('org.robolectric:robolectric:3.0-rc2') {
+    testImplementation 'junit:junit:4.12'
+    testImplementation('org.robolectric:robolectric:3.0-rc2') {
         exclude group: 'commons-logging', module: 'commons-logging'
         exclude group: 'org.apache.httpcomponents', module: 'httpclient'
     }

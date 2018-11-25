@@ -2,7 +2,6 @@ package com.progscrape.ui;
 
 import android.content.Context;
 import android.os.Parcelable;
-import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -102,7 +101,7 @@ public class StoriesView extends LinearLayout {
 
     public void setTag(String tag) {
         if (tag != null) {
-            toolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
+            toolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_material);
             title.setText(tag);
             title.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
             toolbar.setNavigationOnClickListener(new OnClickListener() {
@@ -112,13 +111,7 @@ public class StoriesView extends LinearLayout {
                 }
             });
         } else {
-            DrawerArrowDrawable drawable = new DrawerArrowDrawable(getContext()) {
-                @Override
-                boolean isLayoutRtl() {
-                    return ViewCompat.getLayoutDirection(StoriesView.this)
-                            == ViewCompat.LAYOUT_DIRECTION_RTL;
-                }
-            };
+            DrawerArrowDrawable drawable = new DrawerArrowDrawable(getContext().getResources());
 
             toolbar.setNavigationIcon(drawable);
             toolbar.setNavigationOnClickListener(new OnClickListener() {

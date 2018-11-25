@@ -14,14 +14,16 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:elevation="4dp"
-        android:background="@color/background_floating_material_dark">
+        android:background="@color/background_floating_material_dark"
+        >
 
         <ImageView
             android:id="@+id/back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingRight="12dp"
-            android:src="@drawable/abc_ic_ab_back_mtrl_am_alpha"
+            android:src="@drawable/abc_ic_ab_back_material"
+            android:theme="@style/WhiteControls"
             />
 
         <TextView
@@ -29,8 +31,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginRight="8dp"
-            android:textColor="@color/bright_foreground_material_dark"
-            tools:text="The title goes here which could potentially be veyyyry long" />
+            android:theme="@style/WhiteControls"
+            tools:text="The title goes here which could potentially be verrryyy long" />
 
     </android.support.v7.widget.Toolbar>
 

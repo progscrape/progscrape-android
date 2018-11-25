@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 The Android Open Source Project
+ * Copyright (C) 2014 Chris Renke
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,192 +15,296 @@
  */
 package com.progscrape.ui;
 
-
-import android.content.Context;
-import android.content.res.TypedArray;
+import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.PixelFormat;
+import android.graphics.PathMeasure;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.support.v7.appcompat.R;
+import android.view.View;
 
-/**
- * A drawable that can draw a "Drawer hamburger" menu or an Arrow and animate between them.
- */
-abstract class DrawerArrowDrawable extends Drawable {
+import static android.graphics.Color.BLACK;
+import static android.graphics.Paint.ANTI_ALIAS_FLAG;
+import static android.graphics.Paint.Cap;
+import static android.graphics.Paint.Cap.BUTT;
+import static android.graphics.Paint.Cap.ROUND;
+import static android.graphics.Paint.SUBPIXEL_TEXT_FLAG;
+import static android.graphics.Paint.Style.STROKE;
+import static android.graphics.PixelFormat.TRANSLUCENT;
+import static android.support.v4.widget.DrawerLayout.DrawerListener;
+import static java.lang.Math.sqrt;
 
-    private final Paint mPaint = new Paint();
-
-    // The angle in degress that the arrow head is inclined at.
-    private static final float ARROW_HEAD_ANGLE = (float) Math.toRadians(45);
-    private final float mBarThickness;
-    // The length of top and bottom bars when they merge into an arrow
-    private final float mTopBottomArrowSize;
-    // The length of middle bar
-    private final float mBarSize;
-    // The length of the middle bar when arrow is shaped
-    private final float mMiddleArrowSize;
-    // The space between bars when they are parallel
-    private final float mBarGap;
-    // Whether bars should spin or not during progress
-    private final boolean mSpin;
-    // Use Path instead of canvas operations so that if color has transparency, overlapping sections
-    // wont look different
-    private final Path mPath = new Path();
-    // The reported intrinsic size of the drawable.
-    private final int mSize;
-    // Whether we should mirror animation when animation is reversed.
-    private boolean mVerticalMirror = false;
-    // The interpolated version of the original progress
-    private float mProgress;
-    // the amount that overlaps w/ bar size when rotation is max
-    private float mMaxCutForBarSize;
-    // The distance of arrow's center from top when horizontal
-    private float mCenterOffset;
+/** A drawable that rotates between a drawer icon and a back arrow based on parameter. */
+public class DrawerArrowDrawable extends Drawable {
 
     /**
-     * @param context used to get the configuration for the drawable from
+     * Joins two {@link Path}s as if they were one where the first 50% of the path is {@code
+     * PathFirst} and the second 50% of the path is {@code pathSecond}.
      */
-    DrawerArrowDrawable(Context context) {
-        final TypedArray typedArray = context.getTheme()
-                .obtainStyledAttributes(null, R.styleable.DrawerArrowToggle,
-                        R.attr.drawerArrowStyle,
-                        R.style.Base_Widget_AppCompat_DrawerArrowToggle);
-        mPaint.setAntiAlias(true);
-        mPaint.setColor(typedArray.getColor(R.styleable.DrawerArrowToggle_color, 0));
-        mSize = typedArray.getDimensionPixelSize(R.styleable.DrawerArrowToggle_drawableSize, 0);
-        // round this because having this floating may cause bad measurements
-        mBarSize = Math.round(typedArray.getDimension(R.styleable.DrawerArrowToggle_barSize, 0));
-        // round this because having this floating may cause bad measurements
-        mTopBottomArrowSize = Math.round(typedArray.getDimension(
-                R.styleable.DrawerArrowToggle_topBottomBarArrowSize, 0));
-        mBarThickness = typedArray.getDimension(R.styleable.DrawerArrowToggle_thickness, 0);
-        // round this because having this floating may cause bad measurements
-        mBarGap = Math.round(typedArray.getDimension(
-                R.styleable.DrawerArrowToggle_gapBetweenBars, 0));
-        mSpin = typedArray.getBoolean(R.styleable.DrawerArrowToggle_spinBars, true);
-        mMiddleArrowSize = typedArray
-                .getDimension(R.styleable.DrawerArrowToggle_middleBarArrowSize, 0);
-        final int remainingSpace = (int) (mSize - mBarThickness * 3 - mBarGap * 2);
-        mCenterOffset = (remainingSpace / 4) * 2; //making sure it is a multiple of 2.
-        mCenterOffset += mBarThickness * 1.5 + mBarGap;
-        typedArray.recycle();
+    private static class JoinedPath {
 
-        mPaint.setStyle(Paint.Style.STROKE);
-        mPaint.setStrokeJoin(Paint.Join.MITER);
-        mPaint.setStrokeCap(Paint.Cap.BUTT);
-        mPaint.setStrokeWidth(mBarThickness);
+        private final PathMeasure measureFirst;
+        private final PathMeasure measureSecond;
+        private final float lengthFirst;
+        private final float lengthSecond;
 
-        mMaxCutForBarSize = (float) (mBarThickness / 2 * Math.cos(ARROW_HEAD_ANGLE));
-    }
-
-    abstract boolean isLayoutRtl();
-
-    /**
-     * If set, canvas is flipped when progress reached to end and going back to start.
-     */
-    protected void setVerticalMirror(boolean verticalMirror) {
-        mVerticalMirror = verticalMirror;
-    }
-
-    @Override
-    public void draw(Canvas canvas) {
-        Rect bounds = getBounds();
-        final boolean isRtl = isLayoutRtl();
-        // Interpolated widths of arrow bars
-        final float arrowSize = lerp(mBarSize, mTopBottomArrowSize, mProgress);
-        final float middleBarSize = lerp(mBarSize, mMiddleArrowSize, mProgress);
-        // Interpolated size of middle bar
-        final float middleBarCut = Math.round(lerp(0, mMaxCutForBarSize, mProgress));
-        // The rotation of the top and bottom bars (that make the arrow head)
-        final float rotation = lerp(0, ARROW_HEAD_ANGLE, mProgress);
-
-        // The whole canvas rotates as the transition happens
-        final float canvasRotate = lerp(isRtl ? 0 : -180, isRtl ? 180 : 0, mProgress);
-        final float arrowWidth = Math.round(arrowSize * Math.cos(rotation));
-        final float arrowHeight = Math.round(arrowSize * Math.sin(rotation));
-
-
-        mPath.rewind();
-        final float topBottomBarOffset = lerp(mBarGap + mBarThickness, -mMaxCutForBarSize,
-                mProgress);
-
-        final float arrowEdge = -middleBarSize / 2;
-        // draw middle bar
-        mPath.moveTo(arrowEdge + middleBarCut, 0);
-        mPath.rLineTo(middleBarSize - middleBarCut * 2, 0);
-
-        // bottom bar
-        mPath.moveTo(arrowEdge, topBottomBarOffset);
-        mPath.rLineTo(arrowWidth, arrowHeight);
-
-        // top bar
-        mPath.moveTo(arrowEdge, -topBottomBarOffset);
-        mPath.rLineTo(arrowWidth, -arrowHeight);
-
-        mPath.close();
-
-        canvas.save();
-        // Rotate the whole canvas if spinning, if not, rotate it 180 to get
-        // the arrow pointing the other way for RTL.
-        canvas.translate(bounds.centerX(), mCenterOffset);
-        if (mSpin) {
-            canvas.rotate(canvasRotate * ((mVerticalMirror ^ isRtl) ? -1 : 1));
-        } else if (isRtl) {
-            canvas.rotate(180);
+        private JoinedPath(Path pathFirst, Path pathSecond) {
+            measureFirst = new PathMeasure(pathFirst, false);
+            measureSecond = new PathMeasure(pathSecond, false);
+            lengthFirst = measureFirst.getLength();
+            lengthSecond = measureSecond.getLength();
         }
-        canvas.drawPath(mPath, mPaint);
 
-        canvas.restore();
+        /**
+         * Returns a point on this curve at the given {@code parameter}.
+         * For {@code parameter} values less than .5f, the first path will drive the point.
+         * For {@code parameter} values greater than .5f, the second path will drive the point.
+         * For {@code parameter} equal to .5f, the point will be the point where the two
+         * internal paths connect.
+         */
+        private void getPointOnLine(float parameter, float[] coords) {
+            if (parameter <= .5f) {
+                parameter *= 2;
+                measureFirst.getPosTan(lengthFirst * parameter, coords, null);
+            } else {
+                parameter -= .5f;
+                parameter *= 2;
+                measureSecond.getPosTan(lengthSecond * parameter, coords, null);
+            }
+        }
     }
 
-    @Override
-    public void setAlpha(int i) {
-        mPaint.setAlpha(i);
+    /** Draws a line between two {@link JoinedPath}s at distance {@code parameter} along each path. */
+    private class BridgingLine {
+
+        private final JoinedPath pathA;
+        private final JoinedPath pathB;
+
+        private BridgingLine(JoinedPath pathA, JoinedPath pathB) {
+            this.pathA = pathA;
+            this.pathB = pathB;
+        }
+
+        /**
+         * Draw a line between the points defined on the paths backing {@code measureA} and
+         * {@code measureB} at the current parameter.
+         */
+        private void draw(Canvas canvas) {
+            pathA.getPointOnLine(parameter, coordsA);
+            pathB.getPointOnLine(parameter, coordsB);
+            if (rounded) insetPointsForRoundCaps();
+            canvas.drawLine(coordsA[0], coordsA[1], coordsB[0], coordsB[1], linePaint);
+        }
+
+        /**
+         * Insets the end points of the current line to account for the protruding
+         * ends drawn for {@link Cap#ROUND} style lines.
+         */
+        private void insetPointsForRoundCaps() {
+            vX = coordsB[0] - coordsA[0];
+            vY = coordsB[1] - coordsA[1];
+
+            magnitude = (float) sqrt((vX * vX + vY * vY));
+            paramA = (magnitude - halfStrokeWidthPixel) / magnitude;
+            paramB = halfStrokeWidthPixel / magnitude;
+
+            coordsA[0] = coordsB[0] - (vX * paramA);
+            coordsA[1] = coordsB[1] - (vY * paramA);
+            coordsB[0] = coordsB[0] - (vX * paramB);
+            coordsB[1] = coordsB[1] - (vY * paramB);
+        }
     }
 
-    // override
-    public boolean isAutoMirrored() {
-        // Draws rotated 180 degrees in RTL mode.
-        return true;
+    /** Paths were generated at a 3px/dp density; this is the scale factor for different densities. */
+    private final static float PATH_GEN_DENSITY = 3;
+
+    /** Paths were generated with at this size for {@link DrawerArrowDrawable#PATH_GEN_DENSITY}. */
+    private final static float DIMEN_DP = 23.5f;
+
+    /**
+     * Paths were generated targeting this stroke width to form the arrowhead properly, modification
+     * may cause the arrow to not for nicely.
+     */
+    private final static float STROKE_WIDTH_DP = 2;
+
+    private BridgingLine topLine;
+    private BridgingLine middleLine;
+    private BridgingLine bottomLine;
+
+    private final Rect bounds;
+    private final float halfStrokeWidthPixel;
+    private final Paint linePaint;
+    private final boolean rounded;
+
+    private boolean flip;
+    private float parameter;
+
+    // Helper fields during drawing calculations.
+    private float vX, vY, magnitude, paramA, paramB;
+    private final float coordsA[] = { 0f, 0f };
+    private final float coordsB[] = { 0f, 0f };
+
+    public DrawerArrowDrawable(Resources resources) {
+        this(resources, false);
     }
 
-    @Override
-    public void setColorFilter(ColorFilter colorFilter) {
-        mPaint.setColorFilter(colorFilter);
+    public DrawerArrowDrawable(Resources resources, boolean rounded) {
+        this.rounded = rounded;
+        float density = resources.getDisplayMetrics().density;
+        float strokeWidthPixel = STROKE_WIDTH_DP * density;
+        halfStrokeWidthPixel = strokeWidthPixel / 2;
+
+        linePaint = new Paint(SUBPIXEL_TEXT_FLAG | ANTI_ALIAS_FLAG);
+        linePaint.setStrokeCap(rounded ? ROUND : BUTT);
+        linePaint.setColor(BLACK);
+        linePaint.setStyle(STROKE);
+        linePaint.setStrokeWidth(strokeWidthPixel);
+
+        int dimen = (int) (DIMEN_DP * density);
+        bounds = new Rect(0, 0, dimen, dimen);
+
+        Path first, second;
+        JoinedPath joinedA, joinedB;
+
+        // Top
+        first = new Path();
+        first.moveTo(5.042f, 20f);
+        first.rCubicTo(8.125f, -16.317f, 39.753f, -27.851f, 55.49f, -2.765f);
+        second = new Path();
+        second.moveTo(60.531f, 17.235f);
+        second.rCubicTo(11.301f, 18.015f, -3.699f, 46.083f, -23.725f, 43.456f);
+        scalePath(first, density);
+        scalePath(second, density);
+        joinedA = new JoinedPath(first, second);
+
+        first = new Path();
+        first.moveTo(64.959f, 20f);
+        first.rCubicTo(4.457f, 16.75f, 1.512f, 37.982f, -22.557f, 42.699f);
+        second = new Path();
+        second.moveTo(42.402f, 62.699f);
+        second.cubicTo(18.333f, 67.418f, 8.807f, 45.646f, 8.807f, 32.823f);
+        scalePath(first, density);
+        scalePath(second, density);
+        joinedB = new JoinedPath(first, second);
+        topLine = new BridgingLine(joinedA, joinedB);
+
+        // Middle
+        first = new Path();
+        first.moveTo(5.042f, 35f);
+        first.cubicTo(5.042f, 20.333f, 18.625f, 6.791f, 35f, 6.791f);
+        second = new Path();
+        second.moveTo(35f, 6.791f);
+        second.rCubicTo(16.083f, 0f, 26.853f, 16.702f, 26.853f, 28.209f);
+        scalePath(first, density);
+        scalePath(second, density);
+        joinedA = new JoinedPath(first, second);
+
+        first = new Path();
+        first.moveTo(64.959f, 35f);
+        first.rCubicTo(0f, 10.926f, -8.709f, 26.416f, -29.958f, 26.416f);
+        second = new Path();
+        second.moveTo(35f, 61.416f);
+        second.rCubicTo(-7.5f, 0f, -23.946f, -8.211f, -23.946f, -26.416f);
+        scalePath(first, density);
+        scalePath(second, density);
+        joinedB = new JoinedPath(first, second);
+        middleLine = new BridgingLine(joinedA, joinedB);
+
+        // Bottom
+        first = new Path();
+        first.moveTo(5.042f, 50f);
+        first.cubicTo(2.5f, 43.312f, 0.013f, 26.546f, 9.475f, 17.346f);
+        second = new Path();
+        second.moveTo(9.475f, 17.346f);
+        second.rCubicTo(9.462f, -9.2f, 24.188f, -10.353f, 27.326f, -8.245f);
+        scalePath(first, density);
+        scalePath(second, density);
+        joinedA = new JoinedPath(first, second);
+
+        first = new Path();
+        first.moveTo(64.959f, 50f);
+        first.rCubicTo(-7.021f, 10.08f, -20.584f, 19.699f, -37.361f, 12.74f);
+        second = new Path();
+        second.moveTo(27.598f, 62.699f);
+        second.rCubicTo(-15.723f, -6.521f, -18.8f, -23.543f, -18.8f, -25.642f);
+        scalePath(first, density);
+        scalePath(second, density);
+        joinedB = new JoinedPath(first, second);
+        bottomLine = new BridgingLine(joinedA, joinedB);
     }
 
-    @Override
-    public int getIntrinsicHeight() {
-        return mSize;
+    @Override public int getIntrinsicHeight() {
+        return bounds.height();
     }
 
-    @Override
-    public int getIntrinsicWidth() {
-        return mSize;
+    @Override public int getIntrinsicWidth() {
+        return bounds.width();
     }
 
-    @Override
-    public int getOpacity() {
-        return PixelFormat.TRANSLUCENT;
+    @Override public void draw(Canvas canvas) {
+        if (flip) {
+            canvas.save();
+            canvas.scale(1f, -1f, getIntrinsicWidth() / 2, getIntrinsicHeight() / 2);
+        }
+
+        topLine.draw(canvas);
+        middleLine.draw(canvas);
+        bottomLine.draw(canvas);
+
+        if (flip) canvas.restore();
     }
 
-    public float getProgress() {
-        return mProgress;
+    @Override public void setAlpha(int alpha) {
+        linePaint.setAlpha(alpha);
+        invalidateSelf();
     }
 
-    public void setProgress(float progress) {
-        mProgress = progress;
+    @Override public void setColorFilter(ColorFilter cf) {
+        linePaint.setColorFilter(cf);
+        invalidateSelf();
+    }
+
+    @Override public int getOpacity() {
+        return TRANSLUCENT;
+    }
+
+    public void setStrokeColor(int color) {
+        linePaint.setColor(color);
         invalidateSelf();
     }
 
     /**
-     * Linear interpolate between a and b with parameter t.
+     * Sets the rotation of this drawable based on {@code parameter} between 0 and 1. Usually driven
+     * via {@link DrawerListener#onDrawerSlide(View, float)}'s {@code slideOffset} parameter.
      */
-    private static float lerp(float a, float b, float t) {
-        return a + (b - a) * t;
+    public void setParameter(float parameter) {
+        if (parameter > 1 || parameter < 0) {
+            throw new IllegalArgumentException("Value must be between 1 and zero inclusive!");
+        }
+        this.parameter = parameter;
+        invalidateSelf();
+    }
+
+    /**
+     * When false, rotates from 3 o'clock to 9 o'clock between a drawer icon and a back arrow.
+     * When true, rotates from 9 o'clock to 3 o'clock between a back arrow and a drawer icon.
+     */
+    public void setFlip(boolean flip) {
+        this.flip = flip;
+        invalidateSelf();
+    }
+
+    /**
+     * Scales the paths to the given screen density. If the density matches the
+     * {@link DrawerArrowDrawable#PATH_GEN_DENSITY}, no scaling needs to be done.
+     */
+    private static void scalePath(Path path, float density) {
+        if (density == PATH_GEN_DENSITY) return;
+        Matrix scaleMatrix = new Matrix();
+        scaleMatrix.setScale(density / PATH_GEN_DENSITY, density / PATH_GEN_DENSITY, 0, 0);
+        path.transform(scaleMatrix);
     }
 }

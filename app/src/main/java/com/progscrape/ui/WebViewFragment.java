@@ -3,6 +3,7 @@ package com.progscrape.ui;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,9 @@ import butterknife.OnClick;
 public class WebViewFragment extends Fragment {
     @InjectView(R.id.browserview)
     BrowserView browser;
+
+    @InjectView(R.id.toolbar)
+    Toolbar toolbar;
 
     private String href, title;
 
