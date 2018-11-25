@@ -11,8 +11,8 @@ buildscript {
 
 // Manifest version information!
 def versionMajor = 1
-def versionMinor = 0
-def versionPatch = 10
+def versionMinor = 2
+def versionPatch = 0
 def versionBuild = 0 // bump for dogfood builds, public betas, etc.
 
 apply plugin: 'com.android.application'
@@ -21,6 +21,7 @@ repositories {
     mavenCentral()
     google()
     maven { url "https://clojars.org/repo/" }
+    jcenter()
 }
 
 def gitSha = 'git rev-parse --short HEAD'.execute([], project.rootDir).text.trim()
@@ -48,7 +49,7 @@ android {
     }
 
     defaultConfig {
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 26
 
         versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
