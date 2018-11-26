@@ -12,4 +12,6 @@
     <string name="lobsters">Lobsters</string>
     <string name="reddit">Reddit</string>
     <string name="main_title"><![CDATA[>progscrape]]>&#x00a0;</string>
+    <string name="navigation_description_open_drawer">Open drawer</string>
+    <string name="navigation_description_back">Back to all stories</string>
 </resources>

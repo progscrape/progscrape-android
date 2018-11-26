@@ -18,6 +18,14 @@
         <item name="android:paddingBottom">1dp</item>
     </style>
 
+    <style name="ThemeToolbar">
+        <item name="toolbarNavigationButtonStyle">@style/ThemeToolbarNavigationButton</item>
+    </style>
+
+    <style name="ThemeToolbarNavigationButton">
+        <item name="android:minWidth">54dp</item>
+    </style>
+
     <style name="WhiteControls">
         <!-- Used to tint the back arrow, menu and spinner arrow -->
         <item name="colorControlNormal">@color/bright_foreground_material_dark</item>
