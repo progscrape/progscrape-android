@@ -3,7 +3,7 @@
     <style name="None">
     </style>
 
-    <style name="Theme.App" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="Theme.App" parent="@android:style/Theme.Material">
         <item name="windowActionBar">false</item>
         <item name="windowActionModeOverlay">true</item>
     </style>

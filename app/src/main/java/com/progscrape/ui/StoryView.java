@@ -15,25 +15,25 @@ import org.apmem.tools.layouts.FlowLayout;
 import java.util.List;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 
 public class StoryView extends LinearLayout {
-    @InjectView(R.id.title)
+    @BindView(R.id.title)
     TextView text;
 
-    @InjectView(R.id.icon_hn)
+    @BindView(R.id.icon_hn)
     ImageView hn;
 
-    @InjectView(R.id.icon_reddit)
+    @BindView(R.id.icon_reddit)
     ImageView reddit;
 
-    @InjectView(R.id.icon_lobsters)
+    @BindView(R.id.icon_lobsters)
     ImageView lobsters;
 
-    @InjectView(R.id.arrow)
+    @BindView(R.id.arrow)
     ImageView arrow;
 
-    @InjectView(R.id.tags)
+    @BindView(R.id.tags)
     FlowLayout tags;
 
     public StoryView(Context context, AttributeSet attrs) {
@@ -46,7 +46,7 @@ public class StoryView extends LinearLayout {
         if (isInEditMode())
             return;
 
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
     }
 
     public void setText(String text) {

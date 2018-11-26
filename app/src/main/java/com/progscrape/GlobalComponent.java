@@ -9,7 +9,7 @@ import dagger.Component;
 /**
  * This is the top-level component in the application, containing global singletons.
  */
-@Singleton @Component
+@Component
 public interface GlobalComponent {
     AppComponent appComponent(AppModule appModule);
 }

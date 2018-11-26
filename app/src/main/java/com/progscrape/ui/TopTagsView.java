@@ -46,7 +46,7 @@ public class TopTagsView extends LinearLayout {
             return;
         }
 
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
 
         data.getTopTags(new RequestListener<List<String>>() {
             @Override

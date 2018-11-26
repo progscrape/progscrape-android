@@ -12,14 +12,14 @@ import com.progscrape.R;
 import com.progscrape.app.data.Story;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 import butterknife.OnClick;
 
 public class WebViewFragment extends Fragment {
-    @InjectView(R.id.browserview)
+    @BindView(R.id.browserview)
     BrowserView browser;
 
-    @InjectView(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar toolbar;
 
     private String href, title;
@@ -84,6 +84,6 @@ public class WebViewFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        ButterKnife.inject(this, getView());
+        ButterKnife.bind(this, getView());
     }
 }

@@ -30,16 +30,16 @@ import com.squareup.otto.Subscribe;
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 
 public class MainActivity extends BaseActivity {
     @Inject
     protected Data data;
 
-    @InjectView(R.id.main_drawer_layout)
+    @BindView(R.id.main_drawer_layout)
     protected DrawerLayout drawerLayout;
 
-    @InjectView(R.id.top_level_view)
+    @BindView(R.id.top_level_view)
     protected View topLevel;
 
     @Inject
@@ -59,7 +59,7 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.app);
 
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
 
         if (savedInstanceState == null)
             searchTag(null, true);

@@ -28,16 +28,16 @@ import java.util.HashMap;
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 
 public class BrowserView extends LinearLayout implements ActivityPauseNotifier.ActivityPauseNotification {
-    @InjectView(R.id.browser)
+    @BindView(R.id.browser)
     WebView browser;
 
-    @InjectView(R.id.title)
+    @BindView(R.id.title)
     TextView title;
 
-    @InjectView(R.id.progress)
+    @BindView(R.id.progress)
     ProgressBar progress;
 
     @Inject
@@ -91,7 +91,7 @@ public class BrowserView extends LinearLayout implements ActivityPauseNotifier.A
         if (isInEditMode())
             return;
 
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
 
         progress.setIndeterminate(true);
 

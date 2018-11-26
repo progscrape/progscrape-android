@@ -26,20 +26,20 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 import butterknife.OnClick;
 
 public class StoriesFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     private String tag;
     private int seq = 0;
 
-    @InjectView(R.id.stories)
+    @BindView(R.id.stories)
     StoriesView stories;
 
-    @InjectView(R.id.story_recycler)
+    @BindView(R.id.story_recycler)
     protected RecyclerView storyRecycler;
 
-    @InjectView(R.id.swipe_refresh)
+    @BindView(R.id.swipe_refresh)
     protected SwipeRefreshLayout refresh;
 
     @Inject
@@ -62,7 +62,7 @@ public class StoriesFragment extends Fragment implements SwipeRefreshLayout.OnRe
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        ButterKnife.inject(this, getView());
+        ButterKnife.bind(this, getView());
 
         setTag(getArguments().getString("tag"));
         refresh.setOnRefreshListener(this);

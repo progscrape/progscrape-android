@@ -20,21 +20,21 @@ import com.squareup.otto.Bus;
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 import icepick.Icepick;
 import icepick.Icicle;
 
 public class StoriesView extends LinearLayout {
-    @InjectView(R.id.story_recycler)
+    @BindView(R.id.story_recycler)
     protected RecyclerView stories;
 
-    @InjectView(R.id.toolbar)
+    @BindView(R.id.toolbar)
     protected Toolbar toolbar;
 
-    @InjectView(R.id.toolbar_title)
+    @BindView(R.id.toolbar_title)
     protected TextView title;
 
-    @InjectView(R.id.swipe_refresh)
+    @BindView(R.id.swipe_refresh)
     protected SwipeRefreshLayout refresh;
 
     @Inject
@@ -73,7 +73,7 @@ public class StoriesView extends LinearLayout {
         if (isInEditMode())
             return;
 
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
 
         adapter = storiesAdapterFactory.create(getContext());
         stories.setAdapter(adapter);
