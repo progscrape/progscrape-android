@@ -1,5 +1,7 @@
 package com.progscrape.ui;
 
+import android.webkit.WebView;
+
 import com.progscrape.MainActivity;
 import com.progscrape.modules.ActivityScope;
 import com.progscrape.modules.DataModule;
@@ -12,6 +14,8 @@ public interface ActivityComponent {
     void inject(MainActivity mainActivity);
 
     void inject(StoriesFragment storiesFragment);
+
+    void inject(WebViewFragment webViewFragment);
 
     void inject(BrowserView browserView);
 

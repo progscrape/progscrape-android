@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * A progscrape story: title, href, tags and scrape location.
  */
-public class Story {
+public class Story implements Serializable {
     private String title;
     private String href;
     private List<String> tags;

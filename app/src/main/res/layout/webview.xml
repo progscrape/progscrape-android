@@ -26,12 +26,23 @@
             android:theme="@style/WhiteControls"
             />
 
+        <ImageView
+            android:id="@+id/menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:paddingRight="12dp"
+            android:src="@drawable/overflow"
+            android:theme="@style/WhiteControls"
+            />
+
         <TextView
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="8dp"
             android:theme="@style/WhiteControls"
+            android:hyphenationFrequency="full"
+            android:breakStrategy="high_quality"
             tools:text="The title goes here which could potentially be verrryyy long" />
 
     </androidx.appcompat.widget.Toolbar>

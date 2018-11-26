@@ -1,5 +1,6 @@
 package com.progscrape.ui;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DownloadManager;
 import android.content.Context;
@@ -8,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.AttributeSet;
+import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.DownloadListener;
 import android.webkit.WebChromeClient;
@@ -98,6 +100,7 @@ public class BrowserView extends LinearLayout implements ActivityPauseNotifier.A
         setupBrowser();
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     private void setupBrowser() {
         WebSettings settings = browser.getSettings();
         settings.setJavaScriptEnabled(true);
@@ -140,6 +143,15 @@ public class BrowserView extends LinearLayout implements ActivityPauseNotifier.A
                     }
                 }).show();
             }
+        });
+        browser.setOnKeyListener((OnKeyListener) (v, keyCode, event) -> {
+            if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
+                if (browser.canGoBack()) {
+                    browser.goBack();
+                    return true;
+                }
+            }
+            return false;
         });
     }
 

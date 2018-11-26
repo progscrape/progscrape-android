@@ -89,7 +89,10 @@ public class MainActivity extends BaseActivity {
                 activateStory(storyEvent.getStory());
                 break;
             case MENU:
-                showStoryMenu(storyEvent.getStory(), storyEvent.getView());
+                showStoryMenu(storyEvent.getStory(), storyEvent.getView(), true);
+                break;
+            case STORY_MENU:
+                showStoryMenu(storyEvent.getStory(), storyEvent.getView(), false);
                 break;
         }
     }
@@ -140,7 +143,7 @@ public class MainActivity extends BaseActivity {
         drawerLayout.openDrawer(Gravity.LEFT);
     }
 
-    protected void showStoryMenu(final Story story, View view) {
+    protected void showStoryMenu(final Story story, View view, boolean showFilters) {
         PopupMenu popup = new PopupMenu(this, view);
         popup.getMenuInflater().inflate(R.menu.popup_menu, popup.getMenu());
         if (story.getHackerNewsUrl() == null)
@@ -150,10 +153,12 @@ public class MainActivity extends BaseActivity {
         if (story.getLobstersUrl() == null)
             popup.getMenu().findItem(R.id.lobsters).setVisible(false);
 
-        int index = 0;
-        for (String tag : story.getTags()) {
-            index++;
-            popup.getMenu().add(Menu.NONE, -index, index, "\ud83d\udd0d " + tag);
+        if (showFilters) {
+            int index = 0;
+            for (String tag : story.getTags()) {
+                index++;
+                popup.getMenu().add(Menu.NONE, -index, index, "\ud83d\udd0d " + tag);
+            }
         }
 
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {

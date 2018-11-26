@@ -11,7 +11,8 @@ public class StoryEvent {
 
     public enum What {
         ACTIVATE,
-        MENU
+        MENU,
+        STORY_MENU,
     }
 
     public StoryEvent(Story story, What what) {
