@@ -12,6 +12,7 @@
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:drawablePadding="32dp"
+        android:textColor="@color/design_default_color_primary_dark"
         tools:text="Tag"
         />
 </RelativeLayout>

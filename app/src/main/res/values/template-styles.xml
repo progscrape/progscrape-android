@@ -3,8 +3,9 @@
     <style name="None">
     </style>
 
-    <style name="Theme.App" parent="@android:style/Theme.Material">
+    <style name="Theme.App" parent="@android:style/Theme.Material.Light">
         <item name="windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
         <item name="windowActionModeOverlay">true</item>
     </style>
 
