@@ -8,10 +8,22 @@
 
     <string name="send_post_to">Share post</string>
     <string name="right_arrow">Right arrow</string>
+    <string name="feed">Feed</string>
     <string name="hackernews">Hacker News</string>
     <string name="lobsters">Lobsters</string>
     <string name="reddit">Reddit</string>
     <string name="main_title"><![CDATA[>progscrape]]>&#x00a0;</string>
     <string name="navigation_description_open_drawer">Open drawer</string>
     <string name="navigation_description_back">Back to all stories</string>
+
+    <string name="menu_about">About</string>
+    <string name="menu_github_app">Github project…</string>
+    <string name="application_menu">Application menu</string>
+
+    <string name="about_message">progscrape: all the news that\'s fit to scrape
+        \n\nBy Matt Mastracci (matthew@mastracci.com)
+        \n\nMy personal news aggregator that I thought others might enjoy.
+        Open-source, made with love. Contributions welcome!
+    </string>
+    <string name="trending_tags">Trending Tags</string>
 </resources>

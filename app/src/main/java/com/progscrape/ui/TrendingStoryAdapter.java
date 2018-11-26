@@ -96,8 +96,12 @@ public class TrendingStoryAdapter extends RecyclerView.Adapter<TrendingStoryAdap
             itemView.setHasHref(story.getHref() != null);
             itemView.setTags(story.getTags());
             itemView.setText(story.getTitle());
+
+            // For any item with no story source, also show the feed icon (future compat)
+            boolean showFeed = story.getHref() != null && (story.getHackerNewsUrl() == null && story.getRedditUrl() == null && story.getLobstersUrl() == null);
+
             itemView.setIconsVisible(story.getHackerNewsUrl() != null,
-                    story.getRedditUrl() != null, story.getLobstersUrl() != null);
+                    story.getRedditUrl() != null, story.getLobstersUrl() != null, showFeed);
         }
     }
 }

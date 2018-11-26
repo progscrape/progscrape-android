@@ -21,6 +21,9 @@ public class StoryView extends LinearLayout {
     @BindView(R.id.title)
     TextView text;
 
+    @BindView(R.id.icon_feed)
+    ImageView feed;
+
     @BindView(R.id.icon_hn)
     ImageView hn;
 
@@ -53,10 +56,11 @@ public class StoryView extends LinearLayout {
         this.text.setText(text);
     }
 
-    public void setIconsVisible(boolean hn, boolean reddit, boolean lobsters) {
+    public void setIconsVisible(boolean hn, boolean reddit, boolean lobsters, boolean feed) {
         this.hn.setVisibility(hn ? View.VISIBLE : View.GONE);
         this.reddit.setVisibility(reddit ? View.VISIBLE : View.GONE);
         this.lobsters.setVisibility(lobsters ? View.VISIBLE : View.GONE);
+        this.feed.setVisibility(feed ? View.VISIBLE : View.GONE);
     }
 
     public void setTags(List<String> tagStrings) {

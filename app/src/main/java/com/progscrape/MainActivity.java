@@ -1,5 +1,7 @@
 package com.progscrape;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -105,6 +107,26 @@ public class MainActivity extends BaseActivity {
                 break;
             case TOGGLE_DRAWER:
                 openDrawer();
+                break;
+            case MENU:
+                PopupMenu popup = new PopupMenu(this, findViewById(R.id.menu));
+                popup.getMenuInflater().inflate(R.menu.activity_menu, popup.getMenu());
+                popup.show();
+                popup.setOnMenuItemClickListener(item -> {
+                    String url = "https://progscrape.com/";
+                    switch (item.getItemId()) {
+                        case R.id.about:
+                            new AlertDialog.Builder(this).setTitle(R.string.menu_about).setMessage(getString(R.string.about_message)).show();
+                            return true;
+                        case R.id.github_app:
+                            url = "https://github.com/mmastrac/progscrape-android/";
+                            break;
+                    }
+                    Intent i = new Intent(Intent.ACTION_VIEW);
+                    i.setData(Uri.parse(url));
+                    startActivity(i);
+                    return true;
+                });
                 break;
         }
     }

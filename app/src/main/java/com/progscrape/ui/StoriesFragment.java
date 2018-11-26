@@ -54,9 +54,14 @@ public class StoriesFragment extends Fragment implements SwipeRefreshLayout.OnRe
         return inflater.inflate(R.layout.stories, container, false);
     }
 
-    @OnClick(R.id.toolbar)
+    @OnClick(R.id.trending_toolbar_content)
     protected void onClickToolbar() {
         bus.post(ActivityEvent.SCROLL_TO_TOP);
+    }
+
+    @OnClick(R.id.menu)
+    protected void onClickMenu() {
+        bus.post(ActivityEvent.MENU);
     }
 
     @Override

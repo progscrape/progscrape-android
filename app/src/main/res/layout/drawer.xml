@@ -16,11 +16,13 @@
         <TextView
             android:id="@+id/drawer_header"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="?android:attr/actionBarSize"
             android:layout_marginBottom="8dp"
             android:gravity="center"
             android:background="@drawable/drawer_header"
-            android:text="Trending Tags" />
+            android:textAppearance="@android:style/TextAppearance.Material.Title"
+            android:elevation="4dp"
+            android:text="@string/trending_tags" />
 
     </com.progscrape.ui.TopTagsView>
 </LinearLayout>

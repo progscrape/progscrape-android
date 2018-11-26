@@ -20,12 +20,22 @@
             android:layout_height="?android:attr/actionBarSize"
             android:layout_width="match_parent"
             android:elevation="4dp"
-            android:background="@color/design_default_color_background"
+            android:background="@drawable/drawer_header"
             android:theme="@style/ThemeToolbar">
+
+            <ImageView
+                android:id="@+id/menu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:src="@drawable/overflow"
+                android:contentDescription="@string/application_menu" />
 
             <LinearLayout
                 android:id="@+id/trending_toolbar_content"
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="14dp"
                 android:orientation="horizontal">
