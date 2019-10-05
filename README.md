@@ -1,4 +1,4 @@
-# Android App for progscrape.com
+# Android App for progscrape.com ![](https://github.com/mmastrac/progscrape-android/workflows/Android%20CI/badge.svg)
 
 Android app for https://progscrape.com. The source for the main site is available at https://github.com/mmastrac/progscrape.
 
