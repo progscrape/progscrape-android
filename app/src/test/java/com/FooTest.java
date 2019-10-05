@@ -1,9 +1,10 @@
 package com;
 
+import android.util.Log;
+
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
 import com.octo.android.robospice.request.okhttp.OkHttpSpiceRequest;
-import com.progscrape.BuildConfig;
 import com.progscrape.app.data.Story;
 import com.progscrape.data.Data;
 import com.progscrape.data.FeedParser;
@@ -22,7 +23,7 @@ import java.util.concurrent.TimeUnit;
 import static org.junit.Assert.fail;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, emulateSdk = 21, manifest = Config.NONE)
+@Config(sdk = 21, manifest = Config.NONE)
 public class FooTest {
     @Test
     public void testHi() throws InterruptedException {
@@ -44,13 +45,13 @@ public class FooTest {
         data.getStoryData(null, new RequestListener<List<Story>>() {
             @Override
             public void onRequestFailure(SpiceException spiceException) {
-                System.out.println(spiceException);
+                Log.e("test", "onRequestFailure", spiceException);
                 latch.countDown();
             }
 
             @Override
             public void onRequestSuccess(List<Story> stories) {
-                System.out.println(stories);
+                Log.e("test", "onRequestSuccess: " + stories.toString());
                 latch.countDown();
             }
         }, false);
