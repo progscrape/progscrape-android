@@ -24,7 +24,7 @@ import javax.inject.Inject;
 import butterknife.ButterKnife;
 import butterknife.BindView;
 import icepick.Icepick;
-import icepick.Icicle;
+import icepick.State;
 
 public class StoriesView extends LinearLayout {
     @BindView(R.id.story_recycler)
@@ -45,7 +45,7 @@ public class StoriesView extends LinearLayout {
     @Inject
     protected Bus bus;
 
-    @Icicle
+    @State
     Parcelable scrollPos = null;
 
     private TrendingStoryAdapter adapter;
