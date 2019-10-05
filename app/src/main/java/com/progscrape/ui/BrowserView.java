@@ -4,15 +4,14 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DownloadManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.View;
-import android.webkit.DownloadListener;
 import android.webkit.WebChromeClient;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -29,8 +28,8 @@ import java.util.HashMap;
 
 import javax.inject.Inject;
 
-import butterknife.ButterKnife;
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class BrowserView extends LinearLayout implements ActivityPauseNotifier.ActivityPauseNotification {
     @BindView(R.id.browser)
@@ -123,28 +122,36 @@ public class BrowserView extends LinearLayout implements ActivityPauseNotifier.A
                 }
             }
         });
-        browser.setWebViewClient(new WebViewClient());
-        browser.setDownloadListener(new DownloadListener() {
+        browser.setWebViewClient(new WebViewClient() {
             @Override
-            public void onDownloadStart(final String url, String userAgent, String contentDisposition, String mimetype, long contentLength) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                builder.setMessage("Unable to view " + mimetype + ". Download the file instead?")
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                DownloadManager dm = (DownloadManager) getContext().getSystemService(Context.DOWNLOAD_SERVICE);
-                                dm.enqueue(new DownloadManager.Request(Uri.parse(url)));
-                                back();
-                            }
-                        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        back();
+            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                String scheme = request.getUrl().getScheme();
+                if (scheme != null) {
+                    if (!scheme.equals("http") && !scheme.equals("https") && !scheme.equals("data") && !scheme.equals("ftp")) {
+                        return true;
                     }
-                }).show();
+                }
+                return super.shouldOverrideUrlLoading(view, request);
+            }
+
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                if (!url.startsWith("http:") && !url.startsWith("https:") && !url.startsWith("data:") && !url.startsWith("ftp:")) {
+                    return true;
+                }
+                return super.shouldOverrideUrlLoading(view, url);
             }
         });
-        browser.setOnKeyListener((OnKeyListener) (v, keyCode, event) -> {
+        browser.setDownloadListener((url, userAgent, contentDisposition, mimetype, contentLength) -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setMessage("Unable to view " + mimetype + ". Download the file instead?")
+                    .setPositiveButton("Yes", (dialog, which) -> {
+                        DownloadManager dm = (DownloadManager) getContext().getSystemService(Context.DOWNLOAD_SERVICE);
+                        dm.enqueue(new DownloadManager.Request(Uri.parse(url)));
+                        back();
+                    }).setNegativeButton("No", (dialog, which) -> back()).show();
+        });
+        browser.setOnKeyListener((v, keyCode, event) -> {
             if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
                 if (browser.canGoBack()) {
                     browser.goBack();
