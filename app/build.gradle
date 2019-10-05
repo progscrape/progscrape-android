@@ -124,7 +124,7 @@ dependencies {
     implementation 'org.apmem.tools:layouts:1.8@aar'
 
     implementation 'frankiesardo:icepick:3.0.2'
-    annotationProcessor 'frankiesardo:icepick-processor:3.0.2'
+    annotationProcessor 'frankiesardo:icepick-processor:3.2.0'
 
     testImplementation 'junit:junit:4.12'
     testImplementation('org.robolectric:robolectric:3.0-rc2') {
