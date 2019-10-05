@@ -121,7 +121,7 @@ dependencies {
     implementation 'com.jakewharton.timber:timber:3.0.0'
     implementation 'io.reactivex:rxandroid:1.2.1'
     implementation 'net.danlew:android.joda:2.7.1'
-    implementation 'org.apmem.tools:layouts:1.8@aar'
+    implementation 'org.apmem.tools:layouts:1.10@aar'
 
     implementation 'frankiesardo:icepick:3.0.2'
     annotationProcessor 'frankiesardo:icepick-processor:3.0.2'
