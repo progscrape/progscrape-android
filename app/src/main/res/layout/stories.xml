@@ -53,7 +53,7 @@
             </LinearLayout>
         </androidx.appcompat.widget.Toolbar>
 
-        <com.progscrape.ui.FixedSwipeRefreshLayout
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swipe_refresh"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -87,6 +87,6 @@
                         tool:text="This is the placeholder" />
                 </RelativeLayout>
             </ViewAnimator>
-        </com.progscrape.ui.FixedSwipeRefreshLayout>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     </LinearLayout>
 </com.progscrape.ui.StoriesView>
