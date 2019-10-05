@@ -8,4 +8,4 @@ The source is organized into an `app` project for the majority of the Android UI
 
 ## Screenshot
 
-![screenshot.png](screenshot.png)
+![.docs/screenshot.png](.docs/screenshot.png)
