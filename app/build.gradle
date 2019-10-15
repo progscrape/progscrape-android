@@ -128,7 +128,7 @@ dependencies {
     annotationProcessor 'frankiesardo:icepick-processor:3.2.0'
 
     testImplementation 'junit:junit:4.12'
-    testImplementation('org.robolectric:robolectric:4.3') {
+    testImplementation('org.robolectric:robolectric:4.3.1') {
         exclude group: 'commons-logging', module: 'commons-logging'
         exclude group: 'org.apache.httpcomponents', module: 'httpclient'
     }
