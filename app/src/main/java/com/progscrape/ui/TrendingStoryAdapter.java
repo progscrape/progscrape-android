@@ -98,10 +98,17 @@ public class TrendingStoryAdapter extends RecyclerView.Adapter<TrendingStoryAdap
             itemView.setText(story.getTitle());
 
             // For any item with no story source, also show the feed icon (future compat)
-            boolean showFeed = story.getHref() != null && (story.getHackerNewsUrl() == null && story.getRedditUrl() == null && story.getLobstersUrl() == null);
+            boolean showFeed = story.getHref() != null
+                    && (story.getHackerNewsUrl() == null
+                    && story.getRedditUrl() == null
+                    && story.getLobstersUrl() == null
+                    && story.getSlashdotUrl() == null);
 
             itemView.setIconsVisible(story.getHackerNewsUrl() != null,
-                    story.getRedditUrl() != null, story.getLobstersUrl() != null, showFeed);
+                    story.getRedditUrl() != null,
+                    story.getLobstersUrl() != null,
+                    story.getSlashdotUrl() != null,
+                    showFeed);
         }
     }
 }

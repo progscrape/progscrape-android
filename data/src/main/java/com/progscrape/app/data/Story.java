@@ -13,6 +13,7 @@ public class Story implements Serializable {
     private String redditUrl;
     private String hackerNewsUrl;
     private String lobstersUrl;
+    private String slashdotUrl;
 
     public String getTitle() {
         return title;
@@ -60,5 +61,13 @@ public class Story implements Serializable {
 
     public void setLobstersUrl(String lobstersUrl) {
         this.lobstersUrl = lobstersUrl;
+    }
+
+    public String getSlashdotUrl() {
+        return slashdotUrl;
+    }
+
+    public void setSlashdotUrl(String slashdotUrl) {
+        this.slashdotUrl = slashdotUrl;
     }
 }

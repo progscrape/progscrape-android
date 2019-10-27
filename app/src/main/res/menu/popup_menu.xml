@@ -18,6 +18,10 @@
         android:title="Open lobste.rs comments..." />
 
     <item
+        android:id="@+id/slashdot"
+        android:title="Open Slashdot comments..." />
+
+    <item
         android:id="@+id/browser"
         android:title="Open in browser/app..." />
 

@@ -29,7 +29,7 @@ public class FeedParser {
                 story.setHackerNewsUrl(rawStory.getString("hnews"));
                 story.setRedditUrl(rawStory.getString("reddit"));
                 story.setLobstersUrl(rawStory.getString("lobsters"));
-
+                story.setSlashdotUrl(rawStory.getString("slashdot"));
                 stories.add(story);
             }
 

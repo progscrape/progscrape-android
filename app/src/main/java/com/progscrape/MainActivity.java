@@ -174,6 +174,8 @@ public class MainActivity extends BaseActivity {
             popup.getMenu().findItem(R.id.reddit).setVisible(false);
         if (story.getLobstersUrl() == null)
             popup.getMenu().findItem(R.id.lobsters).setVisible(false);
+        if (story.getSlashdotUrl() == null)
+            popup.getMenu().findItem(R.id.slashdot).setVisible(false);
 
         if (showFilters) {
             int index = 0;
