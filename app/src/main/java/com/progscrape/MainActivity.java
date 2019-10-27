@@ -214,6 +214,9 @@ public class MainActivity extends BaseActivity {
                     case R.id.lobsters:
                         url = story.getLobstersUrl();
                         break;
+                    case R.id.slashdot:
+                        url = story.getSlashdotUrl();
+                        break;
                     case R.id.browser:
                         url = story.getHref();
                         break;
