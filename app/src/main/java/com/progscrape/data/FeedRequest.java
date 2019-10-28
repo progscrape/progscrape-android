@@ -1,7 +1,5 @@
 package com.progscrape.data;
 
-import android.util.Log;
-
 import com.grack.nanojson.JsonObject;
 import com.grack.nanojson.JsonParser;
 import com.octo.android.robospice.request.okhttp.OkHttpSpiceRequest;
@@ -12,6 +10,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.concurrent.TimeUnit;
+
+import timber.log.Timber;
 
 public class FeedRequest extends OkHttpSpiceRequest<JsonObject> implements Request {
     private String query;
@@ -36,14 +36,14 @@ public class FeedRequest extends OkHttpSpiceRequest<JsonObject> implements Reque
 
     @Override
     public JsonObject loadDataFromNetwork() throws Exception {
-        URL baseUrl = new URL("http://www.progscrape.com/feed.json"
+        URL baseUrl = new URL("https://progscrape.com/feed.json"
                 + (query == null ? "" : "?search=" + URLEncoder.encode(query, "UTF-8")));
-        Log.d("feed", "Making request to " + baseUrl);
+        Timber.d("Making request to %s", baseUrl);
         HttpURLConnection conn = getUrlFactory().open(baseUrl);
 
         try (InputStream in = conn.getInputStream()) {
             JsonObject rawFeed = JsonParser.object().from(in);
-            Log.d("feed", "Successfully retrieved feed");
+            Timber.d("Successfully retrieved feed");
             return rawFeed;
         }
     }

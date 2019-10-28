@@ -170,7 +170,7 @@ public class BrowserView extends LinearLayout implements ActivityPauseNotifier.A
         this.titleText = title;
         if (this.href == null || !this.href.equals(href)) {
             this.href = href;
-            this.browser.loadUrl(href, new HashMap<>(ImmutableMap.of("Referer", "http://www.progscrape.com/")));
+            this.browser.loadUrl(href, new HashMap<>(ImmutableMap.of("Referer", "http://progscrape.com/")));
         }
         this.title.setText(title);
     }
