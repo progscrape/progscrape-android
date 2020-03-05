@@ -107,7 +107,7 @@ dependencies {
     implementation 'androidx.annotation:annotation:1.1.0'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'androidx.drawerlayout:drawerlayout:1.0.0'
-    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0-alpha03'
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0-beta01'
     implementation 'com.octo.android.robospice:robospice:1.4.14'
     implementation 'com.octo.android.robospice:robospice-okhttp:1.4.14'
     implementation 'com.grack:nanojson:1.4'
