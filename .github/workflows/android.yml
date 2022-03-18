@@ -13,7 +13,7 @@ jobs:
       uses: actions/setup-java@v2
       with:
         distribution: 'temurin'
-        java-version: '11'
+        java-version: '17'
     - uses: vgaidarji/android-github-actions/build@v1.0.0
     - name: Build with Gradle
       run: ./gradlew build
