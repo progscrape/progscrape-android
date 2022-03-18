@@ -30,8 +30,8 @@ def isTravis = "true" == System.getenv("TRAVIS")
 def preDexEnabled = "true" == System.getProperty("pre-dex", "true")
 
 android {
-    compileSdkVersion 28
-    buildToolsVersion '28.0.3'
+    compileSdkVersion 31
+    buildToolsVersion '30.0.2'
 
     dexOptions {
         // Skip pre-dexing when running on Travis CI or when disabled via -Dpre-dex=false.
