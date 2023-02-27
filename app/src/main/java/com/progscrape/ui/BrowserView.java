@@ -25,6 +25,7 @@ import com.progscrape.R;
 import com.progscrape.modules.Injector;
 
 import java.util.HashMap;
+import java.util.HashSet;
 
 import javax.inject.Inject;
 
@@ -46,6 +47,7 @@ public class BrowserView extends LinearLayout implements ActivityPauseNotifier.A
 
     private String titleText;
     private String href;
+    private HashSet<String> schemes;
 
     public BrowserView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -54,6 +56,12 @@ public class BrowserView extends LinearLayout implements ActivityPauseNotifier.A
             return;
 
         Injector.obtain(context, ActivityComponent.class).inject(this);
+        schemes = new HashSet();
+        schemes.add("http");
+        schemes.add("https");
+        schemes.add("data");
+        schemes.add("javascript");
+        schemes.add("ftp");
     }
 
     @Override
@@ -127,17 +135,17 @@ public class BrowserView extends LinearLayout implements ActivityPauseNotifier.A
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
                 String scheme = request.getUrl().getScheme();
                 if (scheme != null) {
-                    if (!scheme.equals("http") && !scheme.equals("https") && !scheme.equals("data") && !scheme.equals("ftp")) {
-                        return true;
-                    }
+                    return schemes.contains(scheme);
                 }
                 return super.shouldOverrideUrlLoading(view, request);
             }
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                if (!url.startsWith("http:") && !url.startsWith("https:") && !url.startsWith("data:") && !url.startsWith("ftp:")) {
-                    return true;
+                for (String scheme: schemes) {
+                    if (url.startsWith(scheme + ":")) {
+                        return true;
+                    }
                 }
                 return super.shouldOverrideUrlLoading(view, url);
             }
