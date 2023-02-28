@@ -109,8 +109,13 @@ public class BrowserView extends LinearLayout implements ActivityPauseNotifier.A
 
     @SuppressLint("SetJavaScriptEnabled")
     private void setupBrowser() {
+        WebView.setWebContentsDebuggingEnabled(true);
+
         WebSettings settings = browser.getSettings();
         settings.setJavaScriptEnabled(true);
+        settings.setDomStorageEnabled(true);
+        settings.setDatabaseEnabled(true);
+        settings.setMixedContentMode(WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE);
         settings.setSupportZoom(true);
         settings.setDisplayZoomControls(false);
         settings.setBuiltInZoomControls(true);
@@ -133,19 +138,27 @@ public class BrowserView extends LinearLayout implements ActivityPauseNotifier.A
         browser.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                boolean found = true;
                 String scheme = request.getUrl().getScheme();
                 if (scheme != null) {
-                    return schemes.contains(scheme);
+                    found = schemes.contains(scheme);
+                }
+                if (!found) {
+                    return true;
                 }
                 return super.shouldOverrideUrlLoading(view, request);
             }
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                boolean found = false;
                 for (String scheme: schemes) {
                     if (url.startsWith(scheme + ":")) {
-                        return true;
+                        found = true;
                     }
+                }
+                if (!found) {
+                    return true;
                 }
                 return super.shouldOverrideUrlLoading(view, url);
             }
