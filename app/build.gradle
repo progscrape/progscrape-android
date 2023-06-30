@@ -117,7 +117,7 @@ dependencies {
     implementation 'com.octo.android.robospice:robospice:1.4.14'
     implementation 'com.octo.android.robospice:robospice-okhttp:1.4.14'
     implementation 'com.grack:nanojson:1.8'
-    implementation 'com.google.guava:guava:31.1-jre'
+    implementation 'com.google.guava:guava:32.1.1-jre'
     implementation 'com.squareup:otto:1.3.8'
 
     implementation 'com.google.dagger:dagger:2.45'
